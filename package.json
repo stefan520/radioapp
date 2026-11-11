@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun run scripts/build.ts",
+    "test": "bun run build && bun test scripts/asset-delivery.test.ts",
     "start": "bun run docker/server.ts"
   }
 }

@@ -313,7 +313,7 @@ $("#installBtn").addEventListener("click", async () => {
   try { await deferredInstall.prompt(); await deferredInstall.userChoice; }
   finally { deferredInstall = null; $("#installBtn").hidden = true; }
 });
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).catch(() => {});
 selectStation(0);
 function updateChromeTime() {
   const now = new Date();

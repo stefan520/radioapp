@@ -71,7 +71,8 @@ Bun.serve({
     }
     const p=safe(u.pathname);if(!p)return new Response("Bad Request",{status:400,headers:headers()});
     const requested=p==="/"?"/index.html":p,file=Bun.file(root+requested);
-    if(await file.exists())return new Response(file,{headers:headers({"Content-Type":contentTypes[ext(requested)]??file.type??"application/octet-stream","Cache-Control":requested.endsWith(".html")?"no-cache":"public,max-age=31536000,immutable"})});
+    if(await file.exists())return new Response(file,{headers:headers({"Content-Type":contentTypes[ext(requested)]??file.type??"application/octet-stream","Cache-Control":/^\/assets\/[a-f0-9]{12}\//.test(requested)?"public,max-age=31536000,immutable":"no-cache"})});
+    if(ext(requested))return new Response("Not Found",{status:404,headers:headers({"Content-Type":"text/plain; charset=utf-8","Cache-Control":"no-store"})});
     const index=Bun.file(root+"/index.html");if(await index.exists())return new Response(index,{headers:headers({"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-cache"})});
     return new Response("Not Found",{status:404,headers:headers()});
   }

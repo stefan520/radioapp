@@ -1,4 +1,4 @@
-const CACHE="stueradio-v5";
+const CACHE="stueradio-v6";
 const SHELL=["/","/manifest.webmanifest","/icon.svg","/src/styles.css","/src/app.js","/src/cover-art.js"];
 
 self.addEventListener("install",event=>{
