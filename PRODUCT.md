@@ -27,7 +27,11 @@ in-memory cache. The frame mixes still photos, checks for updates every ten
 minutes while visible, and preserves the last successful slideshow on refresh
 errors. Local photos remain a separate source and stay in IndexedDB. Shared
 albums require network access; their unofficial integration can change when
-Google changes its pages. Preserve existing
+Google changes its pages. The photo frame starts an immersive slideshow on
+tap or after ten seconds of inactivity with images available. A tap or key
+returns to the app; radio playback continues. Automatic activation waits while
+settings are open. Screen Wake Lock is enabled by default with a saved opt-out
+and a visible status, subject to browser and device support. Preserve existing
 stations and features. Interface copy is Danish.
 
 ## Brand Commitments

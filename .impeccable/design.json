@@ -406,6 +406,13 @@
       "description": "Three Google Photos share links saved in localStorage, a native source selector, inline fetch status, and a green save action.",
       "html": "<label>Album 1<input type=\"url\" placeholder=\"https://photos.app.goo.gl/?\"></label>",
       "css": ".album-settings input[type=url]{width:100%;min-height:44px;border:1px solid var(--line);border-radius:4px;padding:10px;background:var(--paper);color:var(--ink);font-size:.875rem}"
+    },
+    {
+      "name": "Photo screensaver",
+      "kind": "custom",
+      "description": "Heading-free photo frame opens an immersive slideshow on tap or after ten seconds of inactivity. Image source and wake-lock controls live in inline settings. A dark viewport contains the full uncropped photo, close action, and return hint.",
+      "html": "<section class=\"photo-screensaver\" aria-label=\"Billeddiasshow\"><img alt=\"Billede\"><button aria-label=\"Luk diasshow\">?</button></section>",
+      "css": ".photo-screensaver{position:fixed;inset:0;background:#171a15;color:#f8f5ec;display:grid;place-items:center}.photo-screensaver>img{width:100%;height:100%;object-fit:contain}"
     }
   ],
   "narrative": {

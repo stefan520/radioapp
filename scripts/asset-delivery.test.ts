@@ -51,6 +51,9 @@ test("the offline shell precaches the page's versioned scripts and styles", asyn
   const albumsModule = paths[0].replace("styles.css", "photo-albums.js");
   expect(worker).toContain(albumsModule);
   expect((await fetch(base + albumsModule)).status).toBe(200);
+  const experienceModule = paths[0].replace("styles.css", "photo-experience.js");
+  expect(worker).toContain(experienceModule);
+  expect((await fetch(base + experienceModule)).status).toBe(200);
   const app = await (await fetch(base + paths.find((path) => path.endsWith("app.js")))).text();
   expect(app).toContain('from "./cover-art.js"');
   const cover = await fetch(base + paths[0].replace("styles.css", "cover-art.js"));

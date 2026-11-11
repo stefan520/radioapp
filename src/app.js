@@ -1,5 +1,6 @@
 import { getFreeCoverArt } from "./cover-art.js";
 import { initPhotoAlbums } from "./photo-albums.js";
+import { initPhotoExperience } from "./photo-experience.js";
 
 const stations = [
   { id:"retro", name:"Retro-Radio", short:"RETRO", subtitle:"Danmarks Retro-Radio", stream:"https://streammp3.retro-radio.dk/retro-mp3", meta:"retro" },
@@ -20,6 +21,7 @@ const audio = $("#audio"), rail = $("#stationRail"), playBtn = $("#playBtn");
 let current = 0, playback = "ready", playRequest = 0, metadataRequest = 0;
 let lastVolume = .72, deferredInstall = null, photoUrls = [], photoIndex = 0, photoTimer;
 let albumPhotoUrls = [], photoSource = "local";
+let photoExperience = null;
 
 function readPreference(key, fallback) {
   try { return localStorage.getItem(`stueradio:${key}`) ?? fallback; } catch { return fallback; }
@@ -234,10 +236,12 @@ function renderPhoto() {
   $("#prevPhoto").disabled = $("#nextPhoto").disabled = photos.length < 2;
   $("#photoCount").textContent = photos.length ? `${photoIndex + 1} / ${photos.length} · ${photoSource === "google" ? "Google Fotos" : "kun på denne enhed"}` : photoSource === "google" ? "Google Fotos" : "Kun på denne enhed";
   $("#albumFrameStatus").hidden = photoSource !== "google";
+  $("#photoStage").setAttribute("aria-label", photos.length ? "Start diasshow i fuld skærm" : "Tilføj billeder til billedrammen");
+  photoExperience?.refresh();
   if (!photos.length) {
     $("#photoStage").innerHTML = photoSource === "google"
-      ? '<button class="photo-empty" type="button"><span aria-hidden="true">▧</span><strong>Dine albummer, lige her</strong><span>Tilføj op til tre Google Fotos-albummer med delingslinks.</span><span class="photo-cta">Tilføj albummer ＋</span></button>'
-      : '<button class="photo-empty" type="button"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Vælg billeder fra enheden eller tilføj Google Fotos-albummer.</span><span class="photo-cta">Vælg billeder ＋</span></button>';
+      ? '<span class="photo-empty"><span aria-hidden="true">▧</span><strong>Dine albummer, lige her</strong><span>Tilføj op til tre Google Fotos-albummer med delingslinks.</span><span class="photo-cta">Tilføj albummer ＋</span></span>'
+      : '<span class="photo-empty"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Vælg billeder fra enheden eller tilføj Google Fotos-albummer.</span><span class="photo-cta">Vælg billeder ＋</span></span>';
     return;
   }
   const image = document.createElement("img");
@@ -264,7 +268,7 @@ function nextPhoto(direction = 1) {
 function startSlideshow() {
   clearInterval(photoTimer);
   const interval = Number($("#photoInterval").value);
-  if (interval > 0) photoTimer = setInterval(() => { if (!document.hidden && activePhotos().length > 1) nextPhoto(); }, interval);
+  if (interval > 0) photoTimer = setInterval(() => { if (!document.hidden && !photoExperience?.isActive() && activePhotos().length > 1) nextPhoto(); }, interval);
 }
 $("#addPhotosBtn").addEventListener("click", () => $("#photoInput").click());
 $("#photoStage").addEventListener("click", (event) => {
@@ -332,6 +336,7 @@ $("#showWeather").checked = readPreference("show-weather", "true") !== "false";
 $("#weatherPanel").hidden = !$("#showWeather").checked;
 $("#showWeather").addEventListener("change", () => { $("#weatherPanel").hidden = !$("#showWeather").checked; savePreference("show-weather", $("#showWeather").checked); });
 startSlideshow();
+photoExperience = initPhotoExperience({ getPhotos: activePhotos, getIndex: () => photoIndex, onNext: nextPhoto });
 function updateNavigation() {
   const target = location.hash === "#photos" ? "#photos" : "#radio";
   document.querySelectorAll(".nav-link").forEach((link) => {
