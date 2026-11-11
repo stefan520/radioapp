@@ -1,0 +1,9 @@
+{
+  "name": "Stueradio",
+  "short_name": "Stueradio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#24170f",
+  "theme_color": "#3b2416",
+  "lang": "da"
+}
