@@ -1,4 +1,4 @@
-const CACHE="stueradio-v3";
+const CACHE="stueradio-v5";
 const SHELL=["/","/manifest.webmanifest","/icon.svg","/src/styles.css","/src/app.js","/src/cover-art.js"];
 
 self.addEventListener("install",event=>{
@@ -18,7 +18,7 @@ self.addEventListener("fetch",event=>{
   const url=new URL(event.request.url);
   if(event.request.method!=="GET") return;
 
-  if(url.pathname.startsWith("/api/")){
+  if(url.pathname.startsWith("/api/") || url.hostname==="api.open-meteo.com"){
     event.respondWith(fetch(event.request));
     return;
   }
