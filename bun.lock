@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 2,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "stueradio",
+      "dependencies": {
+        "@marcus5914/google-photos-album-image-url-fetch": "1.1.0",
+      },
+    },
+  },
+  "packages": {
+    "@marcus5914/google-photos-album-image-url-fetch": ["@marcus5914/google-photos-album-image-url-fetch@1.1.0", "", {}, "sha512-2KPPBwU4x2Evb47/QCB5b95QFnMvHA1vrUF+T5ON24RqPukDzxxhbt5jzPbGwsBo8tOKQ2vPXmsTKeNncXE1Gg=="],
+  }
+}

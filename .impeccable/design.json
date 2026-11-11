@@ -399,6 +399,13 @@
       "description": "Decorative scale with a station-linked amber needle.",
       "html": "<div class=\"ds-tuner\" aria-hidden=\"true\"><span>FM</span><div class=\"ds-scale\"><div class=\"ds-ticks\"></div><div class=\"ds-numbers\"><span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span></div><i class=\"ds-needle\"></i></div><span>MHz</span></div>",
       "css": ".ds-tuner{display:flex;gap:16px;align-items:center;padding:15px 25px 12px;background:#20342c;color:#b8bd9e;font:.75rem \"Segoe UI\",sans-serif}.ds-scale{position:relative;flex:1;height:28px}.ds-ticks{height:12px;border-top:1px solid #89937a;background:repeating-linear-gradient(90deg,#89937a 0 1px,transparent 1px 7px)}.ds-numbers{display:flex;justify-content:space-between;padding-top:5px;font-variant-numeric:tabular-nums}.ds-needle{position:absolute;top:-4px;bottom:-3px;left:28%;width:2px;background:#e3a15c;transition:left 220ms ease-out}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}"
+    },
+    {
+      "name": "Album settings",
+      "kind": "input",
+      "description": "Three Google Photos share links saved in localStorage, a native source selector, inline fetch status, and a green save action.",
+      "html": "<label>Album 1<input type=\"url\" placeholder=\"https://photos.app.goo.gl/?\"></label>",
+      "css": ".album-settings input[type=url]{width:100%;min-height:44px;border:1px solid var(--line);border-radius:4px;padding:10px;background:var(--paper);color:var(--ink);font-size:.875rem}"
     }
   ],
   "narrative": {

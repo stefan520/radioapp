@@ -1,4 +1,5 @@
 import { getFreeCoverArt } from "./cover-art.js";
+import { initPhotoAlbums } from "./photo-albums.js";
 
 const stations = [
   { id:"retro", name:"Retro-Radio", short:"RETRO", subtitle:"Danmarks Retro-Radio", stream:"https://streammp3.retro-radio.dk/retro-mp3", meta:"retro" },
@@ -18,6 +19,7 @@ const $ = (selector) => document.querySelector(selector);
 const audio = $("#audio"), rail = $("#stationRail"), playBtn = $("#playBtn");
 let current = 0, playback = "ready", playRequest = 0, metadataRequest = 0;
 let lastVolume = .72, deferredInstall = null, photoUrls = [], photoIndex = 0, photoTimer;
+let albumPhotoUrls = [], photoSource = "local";
 
 function readPreference(key, fallback) {
   try { return localStorage.getItem(`stueradio:${key}`) ?? fallback; } catch { return fallback; }
@@ -170,10 +172,10 @@ async function loadWeather() {
     const futureHours = data.hourly.time.map((time, index) => ({ time, index })).filter(({ time }) => time > now && time <= end);
     if (futureHours.length < 24) throw new Error("Incomplete hourly forecast");
     const currentHour = data.hourly.time.findLastIndex((time) => time <= now);
-    const hours = [{ time: now, index: currentHour, current: true }, ...futureHours];
+    const hours = [{ time: now, index: currentHour, current: true }, ...futureHours.filter((_, index) => (index + 1) % 3 === 0)];
     const previousScroll = $("#weatherHours")?.scrollLeft || 0;
     const tomorrow = data.daily?.time?.length > 1 ? `<div class="weather-tomorrow">${weatherIcon(data.daily.weather_code?.[1])}<div><h3>I morgen</h3><p>${weatherDescriptions[data.daily.weather_code?.[1]] || "Vejrudsigt"} · ${weatherNumber(data.daily.precipitation_probability_max?.[1])}% regn</p></div><span class="tomorrow-temp" aria-label="Laveste ${weatherNumber(data.daily.temperature_2m_min?.[1])}, højeste ${weatherNumber(data.daily.temperature_2m_max?.[1])} grader">${weatherNumber(data.daily.temperature_2m_min?.[1])}–${weatherNumber(data.daily.temperature_2m_max?.[1])}°</span></div>` : "";
-    $("#weather").innerHTML = `<div class="weather-toolbar"><h3>Næste 24 timer</h3><div><button id="weatherPrevious" class="small-icon" type="button" aria-label="Vis tidligere timer" aria-controls="weatherHours" disabled>←</button><button id="weatherNext" class="small-icon" type="button" aria-label="Vis senere timer" aria-controls="weatherHours">→</button></div></div><ol id="weatherHours" class="weather-hours" tabindex="0" aria-label="Time for time de næste 24 timer. Rul til siden for flere timer.">${hours.map(({ time, index, current }) => {
+    $("#weather").innerHTML = `<div class="weather-toolbar"><h3>Næste 24 timer<span>Hver 3. time</span></h3><div><button id="weatherPrevious" class="small-icon" type="button" aria-label="Vis tidligere timer" aria-controls="weatherHours" disabled>←</button><button id="weatherNext" class="small-icon" type="button" aria-label="Vis senere timer" aria-controls="weatherHours">→</button></div></div><ol id="weatherHours" class="weather-hours" tabindex="0" aria-label="Vejret i 3-timers intervaller de næste 24 timer. Rul til siden for flere tidspunkter.">${hours.map(({ time, index, current }) => {
       const date = new Date(time * 1000);
       const code = current ? data.current.weather_code : data.hourly.weather_code?.[index];
       return `<li class="weather-card${current ? " weather-now" : ""}"><time class="weather-day" datetime="${date.toISOString()}" title="${weatherDate.format(date)} kl. ${weatherHour.format(date)}">${current ? "Nu" : weatherHour.format(date)}</time>${weatherIcon(code, current ? data.current.is_day : data.hourly.is_day?.[index])}<span class="weather-temp">${weatherNumber(current ? data.current.temperature_2m : data.hourly.temperature_2m?.[index])}°</span><small aria-label="${weatherNumber(data.hourly.precipitation_probability?.[index])} procent sandsynlighed for nedbør">${weatherNumber(data.hourly.precipitation_probability?.[index])}% regn</small></li>`;
@@ -226,36 +228,49 @@ async function addPhotos(files) {
     transaction.onabort = transaction.onerror = () => { database.close(); reject(transaction.error); };
   });
 }
+function activePhotos() { return photoSource === "google" ? albumPhotoUrls : photoUrls; }
 function renderPhoto() {
-  $("#prevPhoto").disabled = $("#nextPhoto").disabled = photoUrls.length < 2;
-  $("#photoCount").textContent = photoUrls.length ? `${photoIndex + 1} / ${photoUrls.length} · kun på denne enhed` : "Kun på denne enhed";
-  if (!photoUrls.length) return;
+  const photos = activePhotos();
+  $("#prevPhoto").disabled = $("#nextPhoto").disabled = photos.length < 2;
+  $("#photoCount").textContent = photos.length ? `${photoIndex + 1} / ${photos.length} · ${photoSource === "google" ? "Google Fotos" : "kun på denne enhed"}` : photoSource === "google" ? "Google Fotos" : "Kun på denne enhed";
+  $("#albumFrameStatus").hidden = photoSource !== "google";
+  if (!photos.length) {
+    $("#photoStage").innerHTML = photoSource === "google"
+      ? '<button class="photo-empty" type="button"><span aria-hidden="true">▧</span><strong>Dine albummer, lige her</strong><span>Tilføj op til tre Google Fotos-albummer med delingslinks.</span><span class="photo-cta">Tilføj albummer ＋</span></button>'
+      : '<button class="photo-empty" type="button"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Vælg billeder fra enheden eller tilføj Google Fotos-albummer.</span><span class="photo-cta">Vælg billeder ＋</span></button>';
+    return;
+  }
   const image = document.createElement("img");
-  image.alt = `Privat billede ${photoIndex + 1} af ${photoUrls.length}`;
-  image.src = photoUrls[photoIndex];
-  image.onerror = () => { $("#photoStatus").textContent = "Billedet kan ikke vises. Prøv et billede i JPG-, PNG- eller WebP-format."; };
+  image.alt = `Billede ${photoIndex + 1} af ${photos.length}`;
+  image.referrerPolicy = "no-referrer";
+  image.src = photos[photoIndex];
+  image.onerror = () => { $("#photoStatus").textContent = photoSource === "google" ? "Billedet kunne ikke hentes. Opdater albummerne i indstillinger." : "Billedet kan ikke vises. Prøv et billede i JPG-, PNG- eller WebP-format."; };
   $("#photoStage").replaceChildren(image);
 }
 async function refreshPhotos() {
   const rows = await getPhotos();
   photoUrls.forEach(URL.revokeObjectURL);
   photoUrls = rows.map((row) => URL.createObjectURL(row.blob));
-  photoIndex = Math.min(photoIndex, Math.max(0, photoUrls.length - 1));
+  photoIndex = Math.min(photoIndex, Math.max(0, activePhotos().length - 1));
   renderPhoto();
 }
 function nextPhoto(direction = 1) {
-  if (!photoUrls.length) return;
-  photoIndex = (photoIndex + direction + photoUrls.length) % photoUrls.length;
+  const photos = activePhotos();
+  if (!photos.length) return;
+  photoIndex = (photoIndex + direction + photos.length) % photos.length;
   $("#photoStatus").textContent = "";
   renderPhoto();
 }
 function startSlideshow() {
   clearInterval(photoTimer);
   const interval = Number($("#photoInterval").value);
-  if (interval > 0) photoTimer = setInterval(() => { if (!document.hidden && photoUrls.length > 1) nextPhoto(); }, interval);
+  if (interval > 0) photoTimer = setInterval(() => { if (!document.hidden && activePhotos().length > 1) nextPhoto(); }, interval);
 }
 $("#addPhotosBtn").addEventListener("click", () => $("#photoInput").click());
-$("#photoStage").addEventListener("click", (event) => { if (event.target.closest(".photo-empty")) $("#photoInput").click(); });
+$("#photoStage").addEventListener("click", (event) => {
+  if (!event.target.closest(".photo-empty")) return;
+  if (photoSource === "google") openAlbums(); else $("#photoInput").click();
+});
 $("#prevPhoto").addEventListener("click", () => { nextPhoto(-1); startSlideshow(); });
 $("#nextPhoto").addEventListener("click", () => { nextPhoto(); startSlideshow(); });
 $("#photoInput").addEventListener("change", async (event) => {
@@ -265,6 +280,7 @@ $("#photoInput").addEventListener("change", async (event) => {
   $("#photoStatus").textContent = "Gemmer dine billeder…";
   try {
     await addPhotos(files);
+    selectPhotoSource("local");
     await refreshPhotos();
     $("#photoStatus").textContent = "";
     startSlideshow();
@@ -272,6 +288,33 @@ $("#photoInput").addEventListener("change", async (event) => {
   finally { event.target.value = ""; $("#addPhotosBtn").disabled = false; }
 });
 refreshPhotos().catch(() => { $("#photoStatus").textContent = "Billedrammen kræver adgang til browserens lokale lager."; });
+
+function selectPhotoSource(source) {
+  photoSource = source === "google" ? "google" : "local";
+  savePreference("photo-source", photoSource);
+  $("#photoSource").value = photoSource;
+  photoIndex = 0;
+  $("#photoStatus").textContent = "";
+  renderPhoto();
+}
+function openAlbums() { toggleSettings(true); $("#album1").focus(); }
+$("#editAlbums").addEventListener("click", openAlbums);
+$("#photoSource").addEventListener("change", (event) => selectPhotoSource(event.target.value));
+selectPhotoSource(readPreference("photo-source", "local"));
+initPhotoAlbums({
+  onSelect: selectPhotoSource,
+  onPhotos(photos) {
+    const current = activePhotos()[photoIndex];
+    // Mix albums once per update; subsequent next/previous steps stay predictable.
+    const mixed = [...photos];
+    for (let i = mixed.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [mixed[i], mixed[j]] = [mixed[j], mixed[i]]; }
+    albumPhotoUrls = mixed;
+    if (photoSource === "google") {
+      photoIndex = Math.max(0, albumPhotoUrls.indexOf(current));
+      renderPhoto();
+    }
+  }
+});
 
 function toggleSettings(open) {
   $("#settings").hidden = !open;

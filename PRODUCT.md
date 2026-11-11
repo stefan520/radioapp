@@ -20,7 +20,14 @@ radio, weather, and photos. Mobile and desktop layouts must also work.
 
 Vanilla JavaScript and CSS, with a Bun server and Docker packaging. Photos stay
 in browser IndexedDB. Streams, weather, metadata, and artwork need network
-access; the installed shell supports offline loading. Preserve existing
+access; the installed shell supports offline loading. Users can save up to
+three shared Google Photos album links in browser localStorage. The server
+reads public album pages without Google login; it keeps only a short-lived
+in-memory cache. The frame mixes still photos, checks for updates every ten
+minutes while visible, and preserves the last successful slideshow on refresh
+errors. Local photos remain a separate source and stay in IndexedDB. Shared
+albums require network access; their unofficial integration can change when
+Google changes its pages. Preserve existing
 stations and features. Interface copy is Danish.
 
 ## Brand Commitments

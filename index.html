@@ -26,8 +26,16 @@
       <h2>Gør dig hjemme</h2>
       <label for="photoInterval">Skift billede hvert <select id="photoInterval"><option value="12000">12. sekund</option><option value="30000">30. sekund</option><option value="60000">minut</option><option value="0">Manuelt</option></select></label>
       <label><input id="showWeather" type="checkbox" checked /> Vis vejrudsigt</label><button id="closeSettings" class="text-button" type="button">Luk indstillinger</button>
+      <form id="albumSettings" class="album-settings" aria-labelledby="albumHeading">
+        <h3 id="albumHeading">Dine Google Fotos-albummer</h3>
+        <p>Indsæt op til tre delingslinks. Linkene gemmes kun i denne browser. Alle med et delingslink kan se albummet.</p>
+        <label for="album1">Album 1<input id="album1" type="url" placeholder="https://photos.app.goo.gl/…" autocomplete="off" spellcheck="false" /></label>
+        <label for="album2">Album 2<input id="album2" type="url" placeholder="Valgfrit albumlink" autocomplete="off" spellcheck="false" /></label>
+        <label for="album3">Album 3<input id="album3" type="url" placeholder="Valgfrit albumlink" autocomplete="off" spellcheck="false" /></label>
+        <div class="album-actions"><button id="saveAlbums" class="album-save" type="submit">Gem albummer</button><button id="refreshAlbums" class="text-button" type="button">Opdater billeder</button></div>
+        <p id="albumStatus" role="status"></p>
+      </form>
     </section>
-    <div class="page-heading"><h1>God lyd. Godt selskab.</h1><p>Din lille pause i hverdagen.</p></div>
     <div class="home-layout">
       <div class="radio-column">
         <section id="radio" class="radio" aria-label="Radioafspiller">
@@ -52,14 +60,16 @@
         <section id="weatherPanel" class="weather-panel" aria-labelledby="weatherHeading">
           <div class="section-heading"><h2 id="weatherHeading">Vejret i Aakirkeby</h2><span aria-hidden="true">⌁</span></div>
           <div id="weather" class="weather" aria-busy="true"><p class="loading-text">Henter udsigten udenfor…</p></div>
-          <div class="weather-footer"><span id="weatherUpdated">Time for time i Aakirkeby</span><button id="retryWeather" class="text-button" type="button" hidden>Prøv igen</button><span>Open-Meteo</span></div>
+          <div class="weather-footer"><span id="weatherUpdated">Hver 3. time i Aakirkeby</span><button id="retryWeather" class="text-button" type="button" hidden>Prøv igen</button><span>Open-Meteo</span></div>
         </section>
         <section id="photos" class="photo-panel" aria-labelledby="photosHeading">
           <div class="section-heading"><h2 id="photosHeading">Små øjeblikke</h2><button id="addPhotosBtn" class="icon-button add-photos" type="button" aria-label="Tilføj billeder" title="Tilføj billeder">＋</button></div>
           <input id="photoInput" type="file" accept="image/*" multiple hidden />
+          <div class="photo-source"><label for="photoSource">Vis billeder fra</label><select id="photoSource"><option value="local">Denne enhed</option><option value="google">Google Fotos</option></select><button id="editAlbums" class="text-button" type="button">Albummer</button></div>
           <div class="photo-frame"><div id="photoStage" class="photo-stage"><button class="photo-empty" type="button"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Tilføj billeder til din egen lille billedramme.</span><span class="photo-cta">Vælg billeder <span aria-hidden="true">＋</span></span></button></div></div>
           <div class="photo-footer"><span id="photoCount">Kun på denne enhed</span><div class="photo-navigation"><button id="prevPhoto" class="small-icon" type="button" aria-label="Forrige billede" disabled>←</button><button id="nextPhoto" class="small-icon" type="button" aria-label="Næste billede" disabled>→</button></div></div>
           <p id="photoStatus" class="photo-status" role="status"></p>
+          <p id="albumFrameStatus" class="album-frame-status" role="status" hidden></p>
         </section>
       </aside>
     </div>

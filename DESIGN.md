@@ -125,9 +125,9 @@ The frontmatter records the default display, headline, title, body, and label ro
 
 ## Layout
 
-The page has a maximum width of (1480px) and horizontal padding of (4%). The header reaches (1600px). The default home grid is `minmax(0, 1fr) minmax(285px, .43fr)` with a (32px) gap. Station buttons use six equal columns.
+The page has a maximum width of (1480px) and horizontal padding of (4%). The header reaches (1600px). The default home grid is `minmax(0, 1fr) minmax(360px, .65fr)` with a (32px) gap. Station buttons use six equal columns.
 
-- At widths up to (1150px), page padding becomes (3%), the right column becomes (285px), and the column gap becomes (24px).
+- At widths up to (1150px), page padding becomes (3%), the right column becomes (360px), and the column gap becomes (24px).
 - At widths up to (850px), the main layout stacks and weather/photos form two columns.
 - At widths up to (580px), navigation wraps, weather/photos stack, the decorative speaker hides, controls wrap, and stations use four columns. Page padding becomes (5%).
 - At widths up to (360px), stations use three columns.
@@ -149,8 +149,8 @@ The enclosure is gently rounded; its display/control insert shares smaller joine
 - **Playback controls:** oxide circular play control (58px), reduced to (52px) in mobile and compact landscape layouts. Hover darkens the fill; press moves it down (1px). Previous/next and mute use transparent backgrounds with warm hover fills.
 - **Station buttons:** bordered cream buttons with a (91px) default minimum height. Hover changes fill and border; selection adds a green border, sage fill, and corner dot. Keep each station's existing mark.
 - **Navigation and icon buttons:** navigation has a tonal active state. Default icon buttons are (44px) square; mobile header buttons are (38px) wide and (44px) high. Preserve Unicode glyphs and accessible Danish names.
-- **Weather:** a horizontally scrollable hourly forecast for the next 24 hours, with current conditions first, arrow navigation, rain probabilities, and a compact tomorrow summary. Keep the sage panel, divided footer, and inline retry state.
-- **Photo frame:** pale paper mat around a cropped image. The empty state is an actionable upload button; separate add and previous/next controls remain available. Disabled navigation is dimmed.
+- **Weather:** a horizontally scrollable forecast in three-hour intervals for the next 24 hours, with larger weather text, current conditions first, arrow navigation, rain probabilities, and a compact tomorrow summary. Keep the sage panel, divided footer, and inline retry state.
+- **Photo frame:** pale paper mat around a cropped image. A native select switches between device photos and Google Photos; Albummer opens three URL fields in inline settings. Links persist in localStorage. A green save button and inline status provide feedback. Remote albums mix still photos and refresh every ten minutes. Local uploads and previous/next controls remain available; disabled navigation is dimmed.
 - **Inputs:** settings use a native select with a bordered paper background; volume uses a slim track and green thumb. Settings expand inline.
 - **Keyboard and motion:** buttons, links, inputs, and selects receive an oxide outline (3px) offset (5px). A skip link appears on focus. Reduced motion disables transitions/animations and smooth scrolling. Default station/play transitions last (160ms); the tuner needle moves over (220ms) with ease-out.
 

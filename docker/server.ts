@@ -1,3 +1,6 @@
+import { createAlbumReader, validateAlbumLinks } from "./google-albums.ts";
+
+const readAlbums = createAlbumReader();
 const port = Number(Bun.env.PORT ?? 3000);
 const root = "./dist";
 const contentTypes: Record<string,string> = {
@@ -59,6 +62,19 @@ Bun.serve({
   port,hostname:"0.0.0.0",
   async fetch(req){
     const u=new URL(req.url);
+    if(u.pathname==="/api/photo-albums"){
+      const responseHeaders=headers({"Cache-Control":"no-store"});
+      if(req.method!=="POST")return Response.json({error:"Brug POST."},{status:405,headers:headers({"Allow":"POST","Cache-Control":"no-store"})});
+      try{
+        // Limit streamed bodies too, rather than trusting Content-Length.
+        const reader=req.body?.getReader();let body="",size=0;const decoder=new TextDecoder();
+        if(reader)try{while(true){const chunk=await reader.read();if(chunk.done)break;size+=chunk.value.byteLength;if(size>8192){await reader.cancel();return Response.json({error:"For mange data."},{status:413,headers:responseHeaders})}body+=decoder.decode(chunk.value,{stream:true})}}finally{reader.releaseLock()}
+        body+=decoder.decode();
+        const links=validateAlbumLinks(JSON.parse(body).albums);
+        const result=await readAlbums(links);
+        return Response.json(result,{status:result.errors.length===links.length&&links.length>0?502:200,headers:responseHeaders});
+      }catch(error){return Response.json({error:error instanceof SyntaxError?"Ugyldige data.":error instanceof Error?error.message:"Albummerne kunne ikke hentes."},{status:400,headers:responseHeaders})}
+    }
     if(u.pathname==="/health")return Response.json({status:"ok"},{headers:headers({"Cache-Control":"no-store"})});
     if(u.pathname==="/robots.txt")return new Response("User-agent: *\nDisallow: /\n",{headers:headers({"Content-Type":"text/plain","Cache-Control":"public,max-age=3600"})});
     if(u.pathname==="/api/now-playing"){

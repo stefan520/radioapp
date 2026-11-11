@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies and build the PWA/frontend.
-RUN bun install
+RUN bun install --frozen-lockfile
 RUN bun run build
 
 FROM oven/bun:1-slim AS runner
@@ -19,6 +19,8 @@ ENV PORT=3000
 # Only ship the built frontend and the tiny Bun static server.
 COPY --from=builder /app/dist ./dist
 COPY docker/server.ts ./server.ts
+COPY docker/google-albums.ts ./google-albums.ts
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 

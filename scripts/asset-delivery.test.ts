@@ -48,10 +48,21 @@ test("the offline shell precaches the page's versioned scripts and styles", asyn
   const paths = [...html.matchAll(/(?:href|src)="(\/assets\/[^\"]+)"/g)].map((match) => match[1]);
   expect(paths.length).toBe(2);
   for (const path of paths) expect(worker).toContain(path);
+  const albumsModule = paths[0].replace("styles.css", "photo-albums.js");
+  expect(worker).toContain(albumsModule);
+  expect((await fetch(base + albumsModule)).status).toBe(200);
   const app = await (await fetch(base + paths.find((path) => path.endsWith("app.js")))).text();
   expect(app).toContain('from "./cover-art.js"');
   const cover = await fetch(base + paths[0].replace("styles.css", "cover-art.js"));
   expect(cover.headers.get("content-type")).toContain("javascript");
+});
+
+test("album API rejects invalid input without contacting external hosts", async () => {
+  const response = await fetch(`${base}/api/photo-albums`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ albums: ["https://localhost/private"] }) });
+  expect(response.status).toBe(400);
+  expect(response.headers.get("cache-control")).toBe("no-store");
+  expect((await fetch(`${base}/api/photo-albums`)).status).toBe(405);
+  expect((await fetch(`${base}/api/photo-albums`, { method: "POST", body: "x".repeat(9000) })).status).toBe(413);
 });
 
 test("Android installation has real PNG icons in both required sizes", async () => {
