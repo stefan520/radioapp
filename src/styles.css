@@ -105,6 +105,7 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
 .station-logo[data-brand="NOVA"] { background: #397631; color: #fff; }
 .station-logo[data-brand="POP"] { color: #7c387f; }
 .station-logo[data-brand="ABC"] { color: #b73525; }
+.station-logo[data-brand="NOREA"] { color: var(--green); font-size: .9rem; }
 .station-logo[data-brand="RETRO"], .station-logo[data-brand="JUL"] { font: bold italic 1.1rem Georgia, serif; }
 .living-room { display: flex; flex-direction: column; gap: 27px; }
 .weather-panel { min-width: 0; padding: 21px 20px 16px; background: #e0e4d5; border-radius: 10px; }

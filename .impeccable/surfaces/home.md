@@ -25,7 +25,7 @@ SIGNATURE: Selecting a station moves the amber tuner needle and updates the
 large station name, selected button, and track information. Play, connecting,
 pause, and failure states are visible. Large controls work by touch and keyboard.
 
-CONTINUITY: Preserve all 11 stations, streams, APIs, local photos, weather,
+CONTINUITY: Preserve all 12 stations, streams, APIs, local photos, weather,
 fullscreen, installation, clock, and offline shell. Add useful inline preferences
 for slideshow speed and weather visibility; keep those preferences locally.
 

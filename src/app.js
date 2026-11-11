@@ -8,12 +8,13 @@ const stations = [
   { id:"p1", name:"DR P1", short:"P1", subtitle:"Nyheder, debat og aktualitet", stream:"https://live-icy.dr.dk/A/A03H.mp3" },
   { id:"p2", name:"DR P2", short:"P2", subtitle:"Klassisk musik og kultur", stream:"https://live-icy.dr.dk/A/A04H.mp3" },
   { id:"p3", name:"DR P3", short:"P3", subtitle:"Pop, hits og nye lyde", stream:"https://live-icy.dr.dk/A/A05H.mp3" },
-  { id:"p4", name:"DR P4 Østjylland", short:"P4", subtitle:"Lokalt fra Østjylland", stream:"https://live-icy.dr.dk/A/A14H.mp3" },
+  { id:"p4", name:"DR P4 Bornholm", short:"P4", subtitle:"Lokalt fra Bornholm", stream:"https://live-icy.dr.dk/A/A06H.mp3" },
   { id:"p5", name:"DR P5", short:"P5", subtitle:"Musikken du kender", stream:"https://live-icy.dr.dk/A/A25H.mp3" },
   { id:"soft", name:"Radio Soft", short:"SOFT", subtitle:"Blødere pop og klassikere", stream:"https://live-bauerdk.sharp-stream.com/radiosoft_dk_mp3" },
   { id:"popfm", name:"POP FM", short:"POP", subtitle:"Klassikere og store hits", stream:"https://live-bauerdk.sharp-stream.com/popfm_dk_mp3" },
   { id:"nova", name:"NOVA", short:"NOVA", subtitle:"De største hits", stream:"https://live-bauerdk.sharp-stream.com/nova128.mp3" },
-  { id:"abc", name:"Radio ABC", short:"ABC", subtitle:"Vi gi'r dig hits · Randers", stream:"https://radioserver.dk/abc", meta:"abc" }
+  { id:"abc", name:"Radio ABC", short:"ABC", subtitle:"Vi gi'r dig hits · Randers", stream:"https://radioserver.dk/abc", meta:"abc" },
+  { id:"norea", name:"Norea Radio", short:"NOREA", subtitle:"Norea Webradio", stream:"https://netradio.norea.dk/stream" }
 ];
 
 const $ = (selector) => document.querySelector(selector);
