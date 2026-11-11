@@ -8,6 +8,9 @@ FORM: Scandinavian radio atelier; seed:860dbd76f5c57388. This is a code-led
 redesign, under the user's instruction to preserve retro character and icons.
 No approved image comp. The repository's previous full-width radio becomes a
 two-column working screen with a separate station selector and living-room rail.
+The user subsequently selected A · Valnød from prototype/retro-radio. The
+production radio follows its walnut cabinet and branding strip, 35% left-hand
+speaker, green display, cream transport and large circular play control.
 
 OWN-WORLD: Warm paper (#eee9dc), pine green (#263e34), cream (#efe4c5), walnut
 (#674432), and oxide (#a4472c). Georgia headings and familiar sans-serif controls.

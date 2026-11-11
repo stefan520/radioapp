@@ -17,7 +17,7 @@ colors:
   station-hover: "#e2e2d3"
   station-selected: "#dfe4d6"
   weather: "#e0e4d5"
-  controls: "#e8dfc9"
+  controls: "#e6dcc3"
 typography:
   display:
     fontFamily: "Georgia, serif"
@@ -48,7 +48,7 @@ rounded:
   control: "6px"
   station: "7px"
   panel: "10px"
-  radio: "15px"
+  radio: "20px"
   round: "50%"
 spacing:
   compact: "8px"
@@ -60,7 +60,7 @@ components:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.play-ink}"
     rounded: "{rounded.round}"
-    size: "58px"
+    size: "64px"
   button-play-hover:
     backgroundColor: "{colors.play-hover}"
   button-icon:
@@ -92,6 +92,8 @@ components:
 ## Overview
 
 **Creative North Star: "Scandinavian radio atelier"**
+
+The user selected A ? Valn?d. For prototype comparisons, see [the design choice](docs/retro-radio-choice.md).
 
 A quiet, tactile radio for a tablet in the living room. Warm paper surrounds a pine-green display, walnut enclosure, cream controls, and restrained oxide accents. Serif headings carry the retro character; familiar sans-serif controls support everyday use.
 
@@ -144,9 +146,11 @@ Depth expresses physical objects: the walnut radio casts a soft shadow, the spea
 
 The enclosure is gently rounded; its display/control insert shares smaller joined corners. Station buttons are softly rectangular. Album art and photo frames have tighter corners. The play control, live indicator, and selected-station dot are circular. Preserve the tuner scale and speaker perforations as radio-specific details.
 
+The selected radio uses a (14px) walnut surround with (20px) corners, a branding strip, a (35%) left speaker, and a green display at least (310px) high on landscape tablets. Its cream control strip uses joined (9px) bottom corners. Mobile uses a (9px) surround, (15px) corners, hides the speaker and wraps volume beneath playback controls.
+
 ## Components
 
-- **Playback controls:** oxide circular play control (58px), reduced to (52px) in mobile and compact landscape layouts. Hover darkens the fill; press moves it down (1px). Previous/next and mute use transparent backgrounds with warm hover fills.
+- **Playback controls:** oxide circular play control (64px), reduced to (56px) on mobile. Hover darkens the fill; press moves it down (1px). Previous/next and mute use transparent backgrounds with warm hover fills.
 - **Station buttons:** icon-only cream buttons with a (72px) minimum height. Hover changes fill and border; selection adds a green border, sage fill, and corner dot. Keep each station's existing mark and accessible name; omit visible labels and the station-section heading.
 - **Navigation and icon buttons:** navigation has a tonal active state. Default icon buttons are (44px) square; mobile header buttons are (38px) wide and (44px) high. Preserve Unicode glyphs and accessible Danish names.
 - **Weather:** a horizontally scrollable forecast in three-hour intervals for the next 24 hours, with larger weather text, current conditions first, arrow navigation, rain probabilities, and a compact tomorrow summary. Keep the sage panel, divided footer, and inline retry state.

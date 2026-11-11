@@ -43,6 +43,7 @@
     <div class="home-layout">
       <div class="radio-column">
         <section id="radio" class="radio" aria-label="Radioafspiller">
+          <div class="cabinet-top" aria-hidden="true"><span class="cabinet-brand">Stueradio.</span><span class="cabinet-model">SR–01</span></div>
           <div class="radio-body">
             <div class="display">
               <div class="display-top"><span class="connection"><i class="live-dot"></i><span id="playbackStatus" role="status">Klar til at spille</span></span><span id="stationNumber">KANAL 01</span></div>
@@ -55,7 +56,6 @@
           <div class="controls">
             <div class="transport"><button id="prevBtn" class="transport-button" type="button" aria-label="Forrige kanal">⏮</button><button id="playBtn" class="play" type="button" aria-label="Afspil">▶</button><button id="nextBtn" class="transport-button" type="button" aria-label="Næste kanal">⏭</button></div>
             <div class="volume-control"><button id="muteBtn" class="sound" type="button" aria-label="Slå lyd fra" aria-pressed="false">🔊</button><label class="volume-wrap" for="volume"><span>Lydstyrke</span><input id="volume" class="volume" type="range" min="0" max="1" value="0.72" step="0.01" /></label><output id="volumeValue" for="volume">72%</output></div>
-            <div class="model-mark" aria-hidden="true"><i></i><small>SR–01</small></div>
           </div>
         </section>
         <section class="station-picker" aria-label="Vælg radiokanal"><div id="stationRail" class="station-rail" role="group" aria-label="Radiokanaler"></div></section>

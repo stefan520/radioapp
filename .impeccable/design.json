@@ -329,7 +329,7 @@
       "refersTo": "button-play",
       "description": "Main playback action; retain the Unicode icon.",
       "html": "<button class=\"ds-play\" type=\"button\" aria-label=\"Afspil\">▶</button>",
-      "css": ".ds-play{width:58px;height:58px;padding:0 0 0 2px;border-radius:50%;border:0;background:var(--accent,#a4472c);color:#fff3dc;font:1.25rem \"Segoe UI\",sans-serif;box-shadow:0 3px 8px #61391f33;cursor:pointer;transition:background 160ms ease}.ds-play:hover{background:#853720}.ds-play:active{transform:translateY(1px)}.ds-play:focus-visible,.ds-icon:focus-visible,.ds-transport:focus-visible,.ds-station:focus-visible,.ds-nav:focus-visible,.ds-select:focus-visible,.ds-volume:focus-visible { outline:3px solid var(--accent,#a4472c); outline-offset:5px; }@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}"
+      "css": ".ds-play{width:64px;height:64px;padding:0 0 0 2px;border-radius:50%;border:0;background:var(--accent,#a4472c);color:#fff3dc;font:1.25rem \"Segoe UI\",sans-serif;box-shadow:0 3px 8px #61391f33;cursor:pointer;transition:background 160ms ease}.ds-play:hover{background:#853720}.ds-play:active{transform:translateY(1px)}.ds-play:focus-visible,.ds-icon:focus-visible,.ds-transport:focus-visible,.ds-station:focus-visible,.ds-nav:focus-visible,.ds-select:focus-visible,.ds-volume:focus-visible { outline:3px solid var(--accent,#a4472c); outline-offset:5px; }@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}"
     },
     {
       "name": "Icon button",
@@ -413,6 +413,13 @@
       "description": "Opened with Se diashow in navigation, with no home-screen preview. Starts after fifteen idle seconds; horizontal swipes change photos, taps close it, and wake-lock controls remain in settings.",
       "html": "<section class=\"photo-screensaver\" aria-label=\"Billeddiasshow\"><img alt=\"Billede\"><button aria-label=\"Luk diasshow\">?</button></section>",
       "css": ".photo-screensaver{position:fixed;inset:0;background:#171a15;color:#f8f5ec;display:grid;place-items:center}.photo-screensaver>img{width:100%;height:100%;object-fit:contain}"
+    },
+    {
+      "name": "Valn?d radio cabinet",
+      "kind": "custom",
+      "description": "User-selected prototype A: walnut frame with branding strip, 35% left fabric speaker, green station display, cream transport and 64px round play control. Mobile hides the decorative speaker and uses a 56px play control.",
+      "html": "<section class=\"radio\" aria-label=\"Stueradio\"><div class=\"cabinet-top\">Stueradio.</div><div class=\"radio-body\"></div></section>",
+      "css": ".radio{background:#674432;padding:14px;border-radius:20px;box-shadow:0 16px 28px -16px #34221988}.radio-body{display:grid;grid-template-columns:35% minmax(0,1fr);background:#263e34;border-radius:9px 9px 0 0}"
     }
   ],
   "narrative": {

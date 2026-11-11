@@ -43,3 +43,6 @@ stations and features. Interface copy is Danish.
 
 The user requests a complete redesign while preserving the retro character and
 existing icons. Keep the Stueradio name, station identities, and app icon.
+
+The user selected A · Valnød from the retro radio prototypes: a horizontal
+walnut cabinet with the fabric speaker to the left of the green display.
