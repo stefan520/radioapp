@@ -1,9 +1,13 @@
 {
-  "name": "Stueradio",
-  "short_name": "Stueradio",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#24170f",
-  "theme_color": "#3b2416",
-  "lang": "da"
+  "name":"Stueradio",
+  "short_name":"Stueradio",
+  "description":"Privat tablet-radio med vejr og billedramme",
+  "start_url":"/",
+  "scope":"/",
+  "display":"standalone",
+  "orientation":"any",
+  "background_color":"#20150e",
+  "theme_color":"#2d1b10",
+  "lang":"da",
+  "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
