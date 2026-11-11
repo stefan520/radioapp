@@ -6,7 +6,8 @@
   "scripts": {
     "build": "bun run scripts/build.ts",
     "test": "bun run build && bun test scripts/asset-delivery.test.ts docker/google-albums.test.ts",
-    "start": "bun run docker/server.ts"
+    "start": "bun run docker/server.ts",
+    "prototype": "bun run scripts/prototype.ts"
   },
   "dependencies": {
     "@marcus5914/google-photos-album-image-url-fetch": "1.1.0"
