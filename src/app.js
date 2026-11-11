@@ -27,7 +27,7 @@ stations.forEach((s,i)=>{
   b.setAttribute("role","listitem");
   b.setAttribute("aria-label",s.name);
   b.title=s.name;
-  b.innerHTML=`<span class="station-logo">${s.short}</span>`;
+  b.innerHTML=`<span class="station-logo" data-brand="${s.short}">${s.short}</span>`;
   b.addEventListener("click",()=>selectStation(i,true));
   rail.appendChild(b);
 });
@@ -146,3 +146,13 @@ $("#installBtn").addEventListener("click",async()=>{if(!deferredInstall)return;d
 
 if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
 selectStation(0,false);
+
+function updateChromeTime(){
+  const now=new Date();
+  const clock=document.querySelector("#clock");
+  const date=document.querySelector("#dateLabel");
+  if(clock) clock.textContent=new Intl.DateTimeFormat("da-DK",{hour:"2-digit",minute:"2-digit"}).format(now);
+  if(date) date.textContent=new Intl.DateTimeFormat("da-DK",{weekday:"long",day:"numeric",month:"long"}).format(now).toUpperCase();
+}
+updateChromeTime();
+setInterval(updateChromeTime,30000);
