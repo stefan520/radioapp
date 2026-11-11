@@ -3,34 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#3b2416" />
+  <meta name="theme-color" content="#2d1b10" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Stueradio" />
   <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles.css" />
   <title>Stueradio</title>
-  <style>
-    :root { font-family: Georgia, "Times New Roman", serif; color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: #24170f; color: #f4e4bd; display: grid; place-items: center; padding: 24px; }
-    main { width: min(960px, 100%); background: linear-gradient(145deg,#5c351d,#2d1a10); border: 2px solid #8f6037; border-radius: 28px; padding: clamp(24px,5vw,56px); box-shadow: 0 24px 60px #0008, inset 0 0 0 6px #24140b66; }
-    .brand { letter-spacing: .22em; text-transform: uppercase; opacity: .8; font-size: .8rem; }
-    h1 { font-size: clamp(2.5rem,8vw,5.5rem); margin: .25em 0 .15em; font-weight: 500; }
-    p { font-family: system-ui,sans-serif; font-size: clamp(1rem,2.2vw,1.2rem); line-height: 1.6; color: #e4cfaa; max-width: 62ch; }
-    .dial { margin-top: 32px; height: 120px; border-radius: 16px; border: 1px solid #c6a469; background: linear-gradient(#b79558,#6c4d2b); position: relative; overflow: hidden; }
-    .dial::before { content: "88   90   92   94   96   98   100   102   104   106   108 MHz"; position: absolute; inset: 0; display: grid; place-items: center; color: #27180e; font-family: ui-monospace,monospace; font-size: clamp(.8rem,2vw,1.2rem); white-space: pre; }
-    .dial::after { content:""; position:absolute; top:10px; bottom:10px; left:50%; width:3px; background:#8a1515; box-shadow:0 0 8px #ffcf76; }
-    .status { margin-top: 28px; border: 1px solid #64825c; background: #162518; color: #b9dcae; border-radius: 14px; padding: 18px 20px; font-family: ui-monospace,monospace; }
-  </style>
 </head>
 <body>
-  <main>
-    <div class="brand">Stueradio</div>
-    <h1>Retro Radio</h1>
-    <p>Appens Docker/PWA-shell kører. Selve den tidligere Sites-frontend er endnu ikke lagt ind i GitHub-repositoryet.</p>
-    <div class="dial" aria-hidden="true"></div>
-    <div class="status">Coolify · Bun · PWA · noindex</div>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">DIT RADIOSKAB</span>
+      <h1>Stueradio</h1>
+    </div>
+    <div class="top-actions">
+      <button id="installBtn" class="icon-btn" type="button" aria-label="Installer app" title="Installer app" hidden>⇩</button>
+      <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Fuld skærm" title="Fuld skærm">⛶</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="radio-cabinet" aria-label="Radio">
+      <div class="radio-inner">
+        <div class="now-playing">
+          <div class="now-cover-wrap">
+            <div id="stationMark" class="station-mark">RETRO</div>
+            <img id="cover" class="cover" alt="" hidden />
+          </div>
+          <div class="now-copy">
+            <div class="status-row">
+              <span><i class="live-dot"></i> NETRADIO</span>
+              <span id="stationNumber">KANAL 01</span>
+            </div>
+            <h2 id="stationTitle">Retro-Radio</h2>
+            <p id="stationSubtitle">Danmarks Retro-Radio</p>
+            <div id="trackBlock" class="track-block">
+              <span id="trackLabel" class="track-label">SPILLER NU</span>
+              <strong id="trackTitle">Henter sangoplysninger…</strong>
+              <span id="trackArtist"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dial-panel">
+          <div class="dial-head">
+            <span>FM · NET</span>
+            <span>MHz</span>
+          </div>
+          <div id="stationRail" class="station-rail" role="list" aria-label="Radiokanaler"></div>
+          <div class="frequency-line" aria-hidden="true">
+            <span>88</span><span>90</span><span>92</span><span>94</span><span>96</span><span>98</span>
+            <span>100</span><span>102</span><span>104</span><span>106</span><span>108</span>
+            <i id="needle" class="needle"></i>
+          </div>
+        </div>
+
+        <div class="radio-controls">
+          <button id="prevBtn" class="control-btn" type="button" aria-label="Forrige kanal">⏮</button>
+          <button id="playBtn" class="control-btn play-btn" type="button" aria-label="Afspil eller pause">▶</button>
+          <button id="nextBtn" class="control-btn" type="button" aria-label="Næste kanal">⏭</button>
+          <div class="volume-wrap">
+            <button id="muteBtn" class="volume-icon" type="button" aria-label="Slå lyd fra eller til">🔊</button>
+            <input id="volume" class="volume" type="range" min="0" max="1" value="0.72" step="0.01" aria-label="Lydstyrke" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel weather-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">LOKALT</span>
+            <h3>Vejret i Randers</h3>
+          </div>
+          <span id="weatherUpdated" class="small"></span>
+        </div>
+        <div id="weather" class="weather">Henter vejret…</div>
+      </article>
+
+      <article class="panel photo-panel">
+        <div class="panel-title">
+          <div>
+            <span class="eyebrow">BILLEDRAMME</span>
+            <h3>Private billeder</h3>
+          </div>
+          <label class="icon-btn upload-btn" title="Vælg billeder" aria-label="Vælg billeder">
+            ＋
+            <input id="photoInput" type="file" accept="image/*" multiple hidden />
+          </label>
+        </div>
+        <div id="photoStage" class="photo-stage">
+          <div class="photo-empty">
+            <span>▧</span>
+            <p>Tryk + for at vælge billeder fra tabletten eller Google Fotos.</p>
+          </div>
+        </div>
+      </article>
+    </section>
   </main>
-  <script>
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
-  </script>
+
+  <audio id="audio" preload="none"></audio>
+  <script type="module" src="/src/app.js"></script>
 </body>
 </html>
