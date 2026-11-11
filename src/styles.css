@@ -25,7 +25,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand-name { font: bold 1.9rem Georgia, serif; letter-spacing: -.04em; }
 .brand-name > span, .footer-brand > span { color: var(--accent); }
 .navigation { display: flex; align-self: stretch; gap: 8px; align-items: center; }
-.nav-link { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 15px; border-radius: 6px; font-size: .88rem; color: var(--muted); }
+.nav-link { border: 0; background: transparent; font-family: inherit; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 15px; border-radius: 6px; font-size: .88rem; color: var(--muted); }
 .nav-link > span { font-size: 1.35rem; }
 .nav-link.active { background: #e0e1d4; color: var(--green); font-weight: 600; }
 .nav-link:hover { background: #e4e2d7; }
@@ -91,12 +91,11 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
 .section-heading > span { color: var(--muted); font-size: .75rem; }
 .station-picker { margin-top: 30px; }
 .station-rail { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
-.station-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 91px; padding: 11px 4px 9px; border: 1px solid var(--line); background: #f4f0e5; border-radius: 7px; transition: background 160ms ease, border-color 160ms ease; position: relative; }
+.station-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 64px; padding: 10px 2px; border: 1px solid var(--line); background: #f4f0e5; border-radius: 7px; transition: background 160ms ease, border-color 160ms ease; position: relative; }
 .station-btn:hover { background: #e2e2d3; border-color: #9ca48d; }
 .station-btn.active { border-color: var(--green); background: #dfe4d6; }
 .station-btn.active::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--green); position: absolute; top: 7px; right: 7px; }
 .station-logo { height: 31px; min-width: 40px; max-width: 100%; display: grid; place-items: center; font: 900 .94rem/1 "Segoe UI", sans-serif; padding: 4px; border-radius: 3px; color: #252b22; }
-.station-name { width: 100%; font-size: .75rem; text-align: center; line-height: 1.3; min-height: 30px; }
 .station-logo[data-brand="P3"] { background: #49df4c; font-size: 1.3rem; }
 .station-logo[data-brand="P1"] { color: #be4412; font-size: 1.25rem; }
 .station-logo[data-brand="P2"] { color: #19257b; font-size: 1.25rem; }
@@ -130,30 +129,11 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
 .weather-card small { font-size: .875rem; color: #58634f; }
 .weather-footer { display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #bfc8b3; padding-top: 12px; margin-top: 16px; font-size: .875rem; color: #526048; }
 .loading-text { grid-column: 1 / -1; align-self: center; font-size: .82rem; line-height: 1.5; color: #4c5947; margin: 0; }
-.photo-panel { scroll-margin-top: 24px; }
-.photo-panel .section-heading { margin-bottom: 12px; }
-.photo-panel h2 { font-size: 1.4rem; }
-.add-photos { width: 36px; height: 36px; min-width: 44px; background: #e1ddcf; }
-.photo-frame { padding: 9px; background: #faf7ee; border-radius: 3px; box-shadow: 0 5px 15px -8px #413a2c55; }
-.photo-stage { width: 100%; min-width: 0; min-height: 246px; aspect-ratio: 1.3; background: #dfddce; overflow: hidden; display: grid; border: 0; padding: 0; text-align: center; }
-.photo-stage > img { width: 100%; height: 100%; object-fit: cover; min-height: 0; }
-.photo-empty { width: 100%; min-width: 0; min-height: 246px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 23px; text-align: center; border: 0; background: transparent; }
-.photo-empty > span:first-child { font-size: 2.75rem; line-height: 1; color: #7b8069; margin-bottom: 17px; }
-.photo-empty strong { font: normal 1.28rem Georgia, serif; margin-bottom: 10px; }
-.photo-empty > span:nth-of-type(2) { max-width: 24ch; font-size: .75rem; color: #535b46; line-height: 1.65; }
-.photo-empty .photo-cta { display: flex; gap: 13px; align-items: center; margin-top: 19px; font-size: .75rem; font-weight: 600; border-bottom: 1px solid #7b8069; padding-bottom: 5px; }
-.photo-empty:hover { background: #d4d6c5; }
-.photo-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
 #photoCount { color: var(--muted); font-size: .75rem; }
-.photo-navigation { display: flex; gap: 3px; }
 .small-icon { width: 44px; height: 44px; background: transparent; border: 0; border-radius: 4px; }
 .small-icon:hover:enabled { background: #dfdece; }
 .photo-status { font-size: .75rem; color: var(--accent); margin: 0; line-height: 1.5; }
 .photo-status:empty { display: none; }
-.photo-panel { padding-top: 4px; }
-.photo-frame { padding: 12px; }
-.photo-caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; margin: 10px 0 2px; font-size: .8rem; color: var(--muted); }
-.photo-caption .text-button { min-height: 44px; }
 .wake-status { flex-basis: 100%; color: var(--muted); font-size: .8rem; line-height: 1.5; }
 .settings > .photo-source { flex-basis: 100%; max-width: 600px; }
 .screensaver-active { overflow: hidden; }
@@ -180,28 +160,26 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
 .album-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
 .album-save { min-height: 44px; padding: 10px 18px; border: 0; border-radius: 6px; background: var(--green); color: var(--surface); }
 .album-save:hover { background: #1b3027; }
-.album-frame-status { color: var(--muted); font-size: .8rem; line-height: 1.5; margin: 8px 0 0; }
-.album-frame-status:empty { display: none; }
 .photo-source { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; font-size: .8rem; }
 .photo-source select { flex: 1; min-width: 115px; min-height: 44px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 8px; }
 .photo-source .text-button { min-height: 44px; }
 @media (max-width: 580px) { .album-settings { grid-template-columns: minmax(0, 1fr); } }
-@media (min-width: 1500px) { .display { min-height: 330px; } .station-copy { margin-top: 40px; } .photo-stage { min-height: 275px; } }
+@media (min-width: 1500px) { .display { min-height: 330px; } .station-copy { margin-top: 40px; } }
 @media (max-width: 1150px) {
   .appbar { gap: 22px; padding-left: 3%; padding-right: 3%; } .page { padding: 0 3%; }
   .home-layout { grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; }
   .display { padding: 22px; min-height: 280px; } .station-copy h2 { font-size: 2.65rem; } .radio-body { grid-template-columns: minmax(0, 1fr) 20%; }
   .controls { gap: 12px; padding: 14px 12px; } .transport { gap: 0; } .model-mark { display: none; }
-  .station-rail { grid-template-columns: repeat(6, minmax(0, 1fr)); } .station-btn { min-height: 81px; }
-  .section-heading > span { font-size: .75rem; } .weather-panel { padding: 20px 14px 14px; } .photo-stage, .photo-empty { min-height: 260px; }
+  .station-rail { grid-template-columns: repeat(6, minmax(0, 1fr)); } .station-btn { min-height: 64px; }
+  .section-heading > span { font-size: .75rem; } .weather-panel { padding: 20px 14px 14px; }
 }
 @media (max-width: 850px) {
   .appbar { gap: 16px; min-height: 84px; } .brand-name { font-size: 1.6rem; } .navigation { gap: 0; } .nav-link { padding: 8px 10px; }
   .header-actions { padding-left: 12px; gap: 0; } .header-time #dateLabel { display: none; }
   .home-layout { grid-template-columns: minmax(0, 1fr); } .radio-body { grid-template-columns: minmax(0, 1fr) 27%; }
   .display { min-height: 280px; padding: 26px; } .station-copy h2 { font-size: 3.25rem; } .station-rail { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .living-room { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 24px; } .weather-panel { padding: 22px 18px; }
-  .photo-stage, .photo-empty { min-height: 230px; } .controls { padding: 16px 23px; gap: 28px; } .model-mark { display: grid; }
+  .living-room { display: flex; flex-direction: column; gap: 24px; } .weather-panel { padding: 22px 18px; }
+  .controls { padding: 16px 23px; gap: 28px; } .model-mark { display: grid; }
 }
 @media (max-width: 580px) {
   :root { scroll-padding-top: 12px; }
@@ -217,9 +195,9 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
   .sound { min-width: 30px; padding: 2px; } .volume-control { gap: 5px; } #volumeValue, .model-mark { display: none; }
   .station-picker { margin-top: 28px; } .section-heading { align-items: baseline; } .section-heading h2 { font-size: 1.3rem; }
   .station-picker .section-heading { flex-direction: column; gap: 5px; } .station-rail { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-  .station-btn { min-height: 83px; } .station-name { font-size: .75rem; }
+  .station-btn { min-height: 64px; }
   .living-room { grid-template-columns: minmax(0, 1fr); gap: 28px; } .weather-panel { padding: 22px; }
-  .photo-stage { aspect-ratio: 1.25; } .photo-stage, .photo-empty { min-height: 255px; }
+
   .settings { gap: 16px; } .settings h2 { width: 100%; } .page-footer { font-size: .75rem; padding: 20px 0; } .footer-brand i { display: none; }
 }
 @media (min-width: 851px) and (max-height: 850px) {
@@ -227,8 +205,8 @@ body[data-playback="error"] .live-dot { background: #f7a68d; }
   .display { min-height: 214px; padding: 22px; } .station-copy { margin: 20px 0 22px; }
   .station-copy h2 { font-size: 2.75rem; } .tuner { padding: 11px 20px 9px; } .scale { height: 24px; }
   .controls { padding: 12px 18px; } .play { width: 52px; height: 52px; flex-basis: 52px; }
-  .station-picker { margin-top: 22px; } .station-btn { padding: 8px 4px; gap: 6px; min-height: 80px; }
-  .photo-stage, .photo-empty { min-height: 210px; } .photo-stage { aspect-ratio: 1.5; }
+  .station-picker { margin-top: 22px; } .station-btn { padding: 8px 4px; gap: 6px; min-height: 64px; }
+
   .weather-panel { padding-top: 18px; }
 }
 @media (max-width: 360px) { .station-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

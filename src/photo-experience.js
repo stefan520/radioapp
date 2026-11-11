@@ -1,12 +1,15 @@
-export function initPhotoExperience({ getPhotos, getIndex, onNext }) {
+export function initPhotoExperience({ getPhotos, getIndex, onNext, onEmpty }) {
   const screen = document.querySelector("#photoScreensaver");
   const image = document.querySelector("#screensaverImage");
-  const stage = document.querySelector("#photoStage");
+  const launcher = document.querySelector("#showSlideshow");
   const keepAwake = document.querySelector("#keepAwake");
   const wakeStatus = document.querySelector("#wakeStatus");
   const backgrounds = [document.querySelector("main"), document.querySelector(".appbar")];
   let active = false, idleTimer, slideTimer, previousFocus, ownedFullscreen = false, wasFullscreen = false;
   let wakeLock = null, wakeRequest = null, dismissedPointer = false;
+  let gesture = null;
+  let failedUntil = 0;
+  const pointers = new Set();
   try { keepAwake.checked = localStorage.getItem("stueradio:keep-awake") !== "false"; } catch {}
 
   function showWakeStatus() {
@@ -45,7 +48,7 @@ export function initPhotoExperience({ getPhotos, getIndex, onNext }) {
   }
   function startSlides() {
     clearInterval(slideTimer);
-    // Even with a paused preview, the screensaver remains a slideshow.
+    // The manual setting still uses a gentle default in screensaver mode.
     const interval = Number(document.querySelector("#photoInterval").value) || 12000;
     slideTimer = setInterval(() => { if (!document.hidden && active) onNext(1); }, interval);
   }
@@ -53,14 +56,15 @@ export function initPhotoExperience({ getPhotos, getIndex, onNext }) {
     clearTimeout(idleTimer);
     if (!active && !document.hidden) idleTimer = setTimeout(() => {
       const editing = document.activeElement?.closest("input, select, textarea, [contenteditable=true]");
-      const ready = stage.querySelector("img")?.naturalWidth > 0;
-      if (getPhotos().length && ready && document.querySelector("#settings").hidden && !editing) open(false);
+      if (getPhotos().length && Date.now() >= failedUntil && document.querySelector("#settings").hidden && !editing) open(false);
       else schedule();
-    }, 10000);
+    }, 15000);
   }
   function open(manual = false) {
-    if (active || document.hidden || !getPhotos().length) return;
+    if (active || document.hidden) return;
+    if (!getPhotos().length) { if (manual) onEmpty(); return; }
     active = true;
+    launcher.setAttribute("aria-expanded", "true");
     clearTimeout(idleTimer);
     previousFocus = document.activeElement;
     wasFullscreen = Boolean(document.fullscreenElement);
@@ -82,6 +86,9 @@ export function initPhotoExperience({ getPhotos, getIndex, onNext }) {
   function close() {
     if (!active) return;
     active = false;
+    gesture = null;
+    pointers.clear();
+    launcher.setAttribute("aria-expanded", "false");
     clearInterval(slideTimer);
     screen.hidden = true;
     document.body.classList.remove("screensaver-active");
@@ -91,21 +98,46 @@ export function initPhotoExperience({ getPhotos, getIndex, onNext }) {
     previousFocus?.focus?.({ preventScroll: true });
     schedule();
   }
-  image.addEventListener("error", () => { close(); document.querySelector("#photoStatus").textContent = "Billedet kunne ikke hentes. Prøv at opdatere albummerne."; });
-  stage.addEventListener("click", () => open(true));
-  screen.addEventListener("click", close);
+  image.addEventListener("error", () => { failedUntil = Date.now() + 60000; close(); image.removeAttribute("src"); document.querySelector("#photoStatus").textContent = "Billedet kunne ikke hentes. Prøv at opdatere albummerne."; });
+  image.draggable = false;
+  launcher.addEventListener("click", () => open(true));
+  document.querySelector("#closeScreensaver").addEventListener("click", close);
+  screen.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("fullscreenchange", () => { if (active && wasFullscreen && !document.fullscreenElement) close(); });
   document.addEventListener("pointerdown", (event) => {
     requestWakeLock();
-    if (active) { dismissedPointer = true; event.preventDefault(); event.stopPropagation(); close(); }
+    if (active) {
+      if (event.button !== 0) return;
+      dismissedPointer = false;
+      pointers.add(event.pointerId);
+      gesture = pointers.size === 1 ? { id: event.pointerId, x: event.clientX, y: event.clientY, maxDistance: 0 } : null;
+      event.preventDefault();
+      try { screen.setPointerCapture(event.pointerId); } catch {}
+    }
     else { dismissedPointer = false; schedule(); }
   }, true);
+  document.addEventListener("pointerup", (event) => {
+    if (!active) return;
+    pointers.delete(event.pointerId);
+    dismissedPointer = true;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!gesture || gesture.id !== event.pointerId) return;
+    const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+    const distance = Math.max(gesture.maxDistance, Math.hypot(dx, dy));
+    gesture = null;
+    if (Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+      onNext(dx < 0 ? 1 : -1);
+      startSlides();
+    } else if (distance < 12) close();
+  }, true);
+  document.addEventListener("pointercancel", (event) => { pointers.delete(event.pointerId); gesture = null; dismissedPointer = true; }, true);
   document.addEventListener("click", (event) => {
     if (dismissedPointer) { dismissedPointer = false; event.preventDefault(); event.stopImmediatePropagation(); }
   }, true);
   document.addEventListener("pointermove", (event) => {
     if (!active) schedule();
-    else if (event.pointerType === "mouse" && Math.abs(event.movementX) + Math.abs(event.movementY) > 3) close();
+    else if (gesture?.id === event.pointerId) gesture.maxDistance = Math.max(gesture.maxDistance, Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y));
   }, { passive: true });
   document.addEventListener("keydown", (event) => {
     if (!active) { schedule(); return; }

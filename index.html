@@ -17,7 +17,7 @@
   <a class="skip-link" href="#radio">Gå til radioen</a>
   <header class="appbar">
     <a class="brand" href="#radio" aria-label="Stueradio, gå til radioen"><span class="brand-icon" aria-hidden="true"><span></span></span><span class="brand-name">Stueradio<span>.</span></span></a>
-    <nav class="navigation" aria-label="Navigation"><a class="nav-link active" href="#radio"><span aria-hidden="true">⊞</span> Radio</a><a class="nav-link" href="#photos"><span aria-hidden="true">▧</span> Billeder</a></nav>
+    <nav class="navigation" aria-label="Navigation"><a class="nav-link active" href="#radio"><span aria-hidden="true">⊞</span> Radio</a><button id="showSlideshow" class="nav-link" type="button" aria-expanded="false" aria-controls="photoScreensaver"><span aria-hidden="true">▧</span> Se diashow</button></nav>
     <div class="header-time"><time id="clock" class="clock">--:--</time><span id="dateLabel">Henter dato…</span></div>
     <div class="header-actions"><button id="installBtn" class="icon-button" type="button" aria-label="Installer app" title="Installer app" hidden>⇩</button><button id="fullscreenBtn" class="icon-button" type="button" aria-label="Fuld skærm" title="Fuld skærm">⛶</button><button id="settingsBtn" class="icon-button" type="button" aria-label="Indstillinger" title="Indstillinger" aria-expanded="false" aria-controls="settings">⚙</button></div>
   </header>
@@ -28,6 +28,8 @@
       <label><input id="showWeather" type="checkbox" checked /> Vis vejrudsigt</label><button id="closeSettings" class="text-button" type="button">Luk indstillinger</button>
       <label><input id="keepAwake" type="checkbox" checked /> Hold skærmen tændt</label><span id="wakeStatus" class="wake-status" role="status"></span>
       <div class="photo-source"><label for="photoSource">Vis billeder fra</label><select id="photoSource"><option value="local">Denne enhed</option><option value="google">Google Fotos</option></select><button id="addPhotosBtn" class="text-button" type="button">Tilføj billeder fra enheden</button></div>
+      <input id="photoInput" type="file" accept="image/*" multiple hidden />
+      <span id="photoCount"></span><p id="photoStatus" class="photo-status" role="status"></p>
       <form id="albumSettings" class="album-settings" aria-labelledby="albumHeading">
         <h3 id="albumHeading">Dine Google Fotos-albummer</h3>
         <p>Indsæt op til tre delingslinks. Linkene gemmes kun i denne browser. Alle med et delingslink kan se albummet.</p>
@@ -56,21 +58,13 @@
             <div class="model-mark" aria-hidden="true"><i></i><small>SR–01</small></div>
           </div>
         </section>
-        <section class="station-picker" aria-labelledby="stationsHeading"><div class="section-heading"><h2 id="stationsHeading">Find din frekvens</h2><span>11 kanaler · ét tryk væk</span></div><div id="stationRail" class="station-rail" role="group" aria-label="Radiokanaler"></div></section>
+        <section class="station-picker" aria-label="Vælg radiokanal"><div id="stationRail" class="station-rail" role="group" aria-label="Radiokanaler"></div></section>
       </div>
       <aside class="living-room" aria-label="Herhjemme">
         <section id="weatherPanel" class="weather-panel" aria-labelledby="weatherHeading">
           <div class="section-heading"><h2 id="weatherHeading">Vejret i Aakirkeby</h2><span aria-hidden="true">⌁</span></div>
           <div id="weather" class="weather" aria-busy="true"><p class="loading-text">Henter udsigten udenfor…</p></div>
           <div class="weather-footer"><span id="weatherUpdated">Hver 3. time i Aakirkeby</span><button id="retryWeather" class="text-button" type="button" hidden>Prøv igen</button><span>Open-Meteo</span></div>
-        </section>
-        <section id="photos" class="photo-panel" aria-label="Billedramme">
-          <input id="photoInput" type="file" accept="image/*" multiple hidden />
-          <div class="photo-frame"><button id="photoStage" class="photo-stage" type="button" aria-label="Start diasshow i fuld skærm"><span class="photo-empty"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Tilføj billeder til din billedramme.</span></span></button></div>
-          <div class="photo-caption"><span>Tryk på billedet for diasshow</span><button id="editAlbums" class="text-button" type="button">Billedindstillinger</button></div>
-          <div class="photo-footer"><span id="photoCount">Kun på denne enhed</span><div class="photo-navigation"><button id="prevPhoto" class="small-icon" type="button" aria-label="Forrige billede" disabled>←</button><button id="nextPhoto" class="small-icon" type="button" aria-label="Næste billede" disabled>→</button></div></div>
-          <p id="photoStatus" class="photo-status" role="status"></p>
-          <p id="albumFrameStatus" class="album-frame-status" role="status" hidden></p>
         </section>
       </aside>
     </div>
@@ -80,7 +74,7 @@
   <section id="photoScreensaver" class="photo-screensaver" role="dialog" aria-modal="true" aria-label="Billeddiasshow" hidden>
     <img id="screensaverImage" alt="" referrerpolicy="no-referrer" />
     <button id="closeScreensaver" class="screensaver-close" type="button" aria-label="Luk diasshow">×</button>
-    <div class="screensaver-footer"><span id="screensaverCount"></span><span>Tryk for at vende tilbage</span></div>
+    <div class="screensaver-footer"><span id="screensaverCount"></span><span>Swipe for at skifte · tryk for at lukke</span></div>
   </section>
   <script type="module" src="/src/app.js"></script>
 </body>

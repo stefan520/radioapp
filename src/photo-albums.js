@@ -14,7 +14,6 @@ export function initPhotoAlbums({ onPhotos, onSelect }) {
 
   function message(text) {
     status.textContent = text;
-    document.querySelector("#albumFrameStatus").textContent = text;
   }
   async function refresh() {
     controller?.abort();

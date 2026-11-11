@@ -16,9 +16,10 @@ icon: the user's preservation request takes precedence over icon replacement.
 Speaker perforation and tuning marks refer directly to the preserved radio.
 
 FIRST VIEWPORT: Radio controls lead at left. Real stations sit in a legible
-button grid below. Aakirkeby weather and a private photo frame occupy the right
-column. Landscape tablet is the primary viewing context. On portrait tablets,
-the living-room sections follow the radio; on phones everything stacks.
+icon-only button grid below without a section heading. Aakirkeby weather occupies
+the right column. Photos open through Se diashow in navigation, with no inline
+preview. The slideshow supports horizontal swipes, tap-to-close, and a fifteen
+second inactivity trigger. On portrait tablets and phones, weather follows radio.
 
 SIGNATURE: Selecting a station moves the amber tuner needle and updates the
 large station name, selected button, and track information. Play, connecting,

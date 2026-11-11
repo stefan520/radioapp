@@ -19,7 +19,7 @@ const stations = [
 const $ = (selector) => document.querySelector(selector);
 const audio = $("#audio"), rail = $("#stationRail"), playBtn = $("#playBtn");
 let current = 0, playback = "ready", playRequest = 0, metadataRequest = 0;
-let lastVolume = .72, deferredInstall = null, photoUrls = [], photoIndex = 0, photoTimer;
+let lastVolume = .72, deferredInstall = null, photoUrls = [], photoIndex = 0;
 let albumPhotoUrls = [], photoSource = "local";
 let photoExperience = null;
 
@@ -37,7 +37,7 @@ stations.forEach((station, index) => {
   button.setAttribute("aria-label", station.name);
   button.setAttribute("aria-pressed", "false");
   button.title = station.name;
-  button.innerHTML = `<span class="station-logo" data-brand="${station.short}" aria-hidden="true">${station.short}</span><span class="station-name">${station.name}</span>`;
+  button.innerHTML = `<span class="station-logo" data-brand="${station.short}" aria-hidden="true">${station.short}</span>`;
   button.addEventListener("click", () => selectStation(index, true));
   rail.appendChild(button);
 });
@@ -233,23 +233,8 @@ async function addPhotos(files) {
 function activePhotos() { return photoSource === "google" ? albumPhotoUrls : photoUrls; }
 function renderPhoto() {
   const photos = activePhotos();
-  $("#prevPhoto").disabled = $("#nextPhoto").disabled = photos.length < 2;
   $("#photoCount").textContent = photos.length ? `${photoIndex + 1} / ${photos.length} · ${photoSource === "google" ? "Google Fotos" : "kun på denne enhed"}` : photoSource === "google" ? "Google Fotos" : "Kun på denne enhed";
-  $("#albumFrameStatus").hidden = photoSource !== "google";
-  $("#photoStage").setAttribute("aria-label", photos.length ? "Start diasshow i fuld skærm" : "Tilføj billeder til billedrammen");
   photoExperience?.refresh();
-  if (!photos.length) {
-    $("#photoStage").innerHTML = photoSource === "google"
-      ? '<span class="photo-empty"><span aria-hidden="true">▧</span><strong>Dine albummer, lige her</strong><span>Tilføj op til tre Google Fotos-albummer med delingslinks.</span><span class="photo-cta">Tilføj albummer ＋</span></span>'
-      : '<span class="photo-empty"><span aria-hidden="true">▧</span><strong>Plads til dine minder</strong><span>Vælg billeder fra enheden eller tilføj Google Fotos-albummer.</span><span class="photo-cta">Vælg billeder ＋</span></span>';
-    return;
-  }
-  const image = document.createElement("img");
-  image.alt = `Billede ${photoIndex + 1} af ${photos.length}`;
-  image.referrerPolicy = "no-referrer";
-  image.src = photos[photoIndex];
-  image.onerror = () => { $("#photoStatus").textContent = photoSource === "google" ? "Billedet kunne ikke hentes. Opdater albummerne i indstillinger." : "Billedet kan ikke vises. Prøv et billede i JPG-, PNG- eller WebP-format."; };
-  $("#photoStage").replaceChildren(image);
 }
 async function refreshPhotos() {
   const rows = await getPhotos();
@@ -265,18 +250,7 @@ function nextPhoto(direction = 1) {
   $("#photoStatus").textContent = "";
   renderPhoto();
 }
-function startSlideshow() {
-  clearInterval(photoTimer);
-  const interval = Number($("#photoInterval").value);
-  if (interval > 0) photoTimer = setInterval(() => { if (!document.hidden && !photoExperience?.isActive() && activePhotos().length > 1) nextPhoto(); }, interval);
-}
 $("#addPhotosBtn").addEventListener("click", () => $("#photoInput").click());
-$("#photoStage").addEventListener("click", (event) => {
-  if (!event.target.closest(".photo-empty")) return;
-  if (photoSource === "google") openAlbums(); else $("#photoInput").click();
-});
-$("#prevPhoto").addEventListener("click", () => { nextPhoto(-1); startSlideshow(); });
-$("#nextPhoto").addEventListener("click", () => { nextPhoto(); startSlideshow(); });
 $("#photoInput").addEventListener("change", async (event) => {
   const files = [...event.target.files].filter((file) => file.type.startsWith("image/"));
   if (!files.length) return;
@@ -287,7 +261,6 @@ $("#photoInput").addEventListener("change", async (event) => {
     selectPhotoSource("local");
     await refreshPhotos();
     $("#photoStatus").textContent = "";
-    startSlideshow();
   } catch { $("#photoStatus").textContent = "Billederne kunne ikke gemmes. Kontrollér, at der er plads på enheden, og prøv igen."; }
   finally { event.target.value = ""; $("#addPhotosBtn").disabled = false; }
 });
@@ -302,7 +275,6 @@ function selectPhotoSource(source) {
   renderPhoto();
 }
 function openAlbums() { toggleSettings(true); $("#album1").focus(); }
-$("#editAlbums").addEventListener("click", openAlbums);
 $("#photoSource").addEventListener("change", (event) => selectPhotoSource(event.target.value));
 selectPhotoSource(readPreference("photo-source", "local"));
 initPhotoAlbums({
@@ -331,14 +303,13 @@ $("#closeSettings").addEventListener("click", () => toggleSettings(false));
 $("#settings").addEventListener("keydown", (event) => { if (event.key === "Escape") toggleSettings(false); });
 const savedInterval = readPreference("photo-interval", "12000");
 if (["12000", "30000", "60000", "0"].includes(savedInterval)) $("#photoInterval").value = savedInterval;
-$("#photoInterval").addEventListener("change", () => { savePreference("photo-interval", $("#photoInterval").value); startSlideshow(); });
+$("#photoInterval").addEventListener("change", () => savePreference("photo-interval", $("#photoInterval").value));
 $("#showWeather").checked = readPreference("show-weather", "true") !== "false";
 $("#weatherPanel").hidden = !$("#showWeather").checked;
 $("#showWeather").addEventListener("change", () => { $("#weatherPanel").hidden = !$("#showWeather").checked; savePreference("show-weather", $("#showWeather").checked); });
-startSlideshow();
-photoExperience = initPhotoExperience({ getPhotos: activePhotos, getIndex: () => photoIndex, onNext: nextPhoto });
+photoExperience = initPhotoExperience({ getPhotos: activePhotos, getIndex: () => photoIndex, onNext: nextPhoto, onEmpty: openAlbums });
 function updateNavigation() {
-  const target = location.hash === "#photos" ? "#photos" : "#radio";
+  const target = "#radio";
   document.querySelectorAll(".nav-link").forEach((link) => {
     const active = link.getAttribute("href") === target;
     link.classList.toggle("active", active);
