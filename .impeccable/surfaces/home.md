@@ -16,7 +16,7 @@ icon: the user's preservation request takes precedence over icon replacement.
 Speaker perforation and tuning marks refer directly to the preserved radio.
 
 FIRST VIEWPORT: Radio controls lead at left. Real stations sit in a legible
-button grid below. Randers weather and a private photo frame occupy the right
+button grid below. Aakirkeby weather and a private photo frame occupy the right
 column. Landscape tablet is the primary viewing context. On portrait tablets,
 the living-room sections follow the radio; on phones everything stacks.
 

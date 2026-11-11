@@ -1,5 +1,5 @@
-const CACHE="stueradio-v6";
-const SHELL=["/","/manifest.webmanifest","/icon.svg","/src/styles.css","/src/app.js","/src/cover-art.js"];
+const CACHE="stueradio-v7";
+const SHELL=["/","/manifest.webmanifest","/icon.svg","/icon-192.png","/icon-512.png","/icon-maskable-512.png","/src/styles.css","/src/app.js","/src/cover-art.js"];
 
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));

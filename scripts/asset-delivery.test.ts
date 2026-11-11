@@ -53,3 +53,36 @@ test("the offline shell precaches the page's versioned scripts and styles", asyn
   const cover = await fetch(base + paths[0].replace("styles.css", "cover-art.js"));
   expect(cover.headers.get("content-type")).toContain("javascript");
 });
+
+test("Android installation has real PNG icons in both required sizes", async () => {
+  const manifest = await (await fetch(`${base}/manifest.webmanifest`)).json();
+  for (const size of [192, 512]) {
+    const icon = manifest.icons.find((icon: { sizes: string; type: string; purpose?: string }) =>
+      icon.sizes === `${size}x${size}` && icon.type === "image/png" && (icon.purpose || "any").split(" ").includes("any"));
+    expect(icon).toBeDefined();
+    const response = await fetch(base + icon.src);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toBe("image/png");
+    const bytes = await response.arrayBuffer();
+    const png = new DataView(bytes);
+    expect(png.getUint32(0)).toBe(0x89504e47);
+    expect(png.getUint32(4)).toBe(0x0d0a1a0a);
+    expect(png.getUint32(16)).toBe(size);
+    expect(png.getUint32(20)).toBe(size);
+  }
+});
+
+test("the versioned manifest keeps a stable identity and is cached for offline use", async () => {
+  const html = await (await fetch(base)).text();
+  const href = html.match(/rel="manifest" href="([^"]+)"/)?.[1];
+  expect(href).toMatch(/^\/manifest\.webmanifest\?v=[a-f0-9]{12}$/);
+  const manifest = await (await fetch(base + href)).json();
+  expect(manifest.id).toBe("/");
+  expect(manifest.start_url).toBe("/");
+  const worker = await (await fetch(`${base}/sw.js`)).text();
+  expect(worker).toContain(href);
+  for (const icon of manifest.icons) {
+    expect(worker).toContain(icon.src);
+    expect((await fetch(base + icon.src)).status).toBe(200);
+  }
+});

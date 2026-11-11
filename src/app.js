@@ -162,7 +162,7 @@ async function loadWeather() {
   $("#weather").setAttribute("aria-busy", "true");
   $("#retryWeather").hidden = true;
   try {
-    const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=56.4607&longitude=10.0364&current=temperature_2m,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FCopenhagen&timeformat=unixtime&forecast_days=2&forecast_hours=25", { cache: "no-store", signal: AbortSignal.timeout(12000) });
+    const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=55.0708&longitude=14.91978&current=temperature_2m,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FCopenhagen&timeformat=unixtime&forecast_days=2&forecast_hours=25", { cache: "no-store", signal: AbortSignal.timeout(12000) });
     if (!response.ok) throw new Error("Weather unavailable");
     const data = await response.json();
     if (!Number.isFinite(data.current?.time) || !data.hourly?.time?.length) throw new Error("Invalid weather");

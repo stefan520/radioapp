@@ -375,7 +375,7 @@
       "kind": "card",
       "refersTo": "weather-panel",
       "description": "Sage panel with a scrollable hourly forecast for the next 24 hours, rain probabilities, arrow navigation, and tomorrow summary.",
-      "html": "<section class=\"ds-weather\"><h2>Vejret i Randers</h2><p>Næste 24 timer · I morgen</p></section>",
+      "html": "<section class=\"ds-weather\"><h2>Vejret i Aakirkeby</h2><p>Næste 24 timer · I morgen</p></section>",
       "css": ".ds-weather{padding:21px 20px 16px;background:#e0e4d5;border-radius:10px;color:var(--ink,#30382c)}.ds-weather h2{margin:0 0 8px;font:normal 1.25rem/1.2 Georgia,serif;letter-spacing:-.025em}.ds-weather p{margin:0;border-top:1px solid #bfc8b3;padding-top:12px;color:#526048;font:.75rem \"Segoe UI\",sans-serif}"
     },
     {

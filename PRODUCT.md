@@ -9,7 +9,7 @@ web
 ## Product Purpose
 
 A Danish radio PWA with station playback, now-playing metadata, album artwork,
-Randers weather, a clock, and a private photo frame.
+Aakirkeby weather, a clock, and a private photo frame.
 
 ## Operating Context
 

@@ -17,6 +17,7 @@ await hashDirectory("src");
 await hashDirectory("public");
 const revision = hash.digest("hex").slice(0, 12);
 const assets = `/assets/${revision}`;
+const manifest = `/manifest.webmanifest?v=${revision}`;
 
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
@@ -25,10 +26,13 @@ await cp("public", "dist", { recursive: true });
 // Keep legacy URLs available for clients upgrading from an earlier release.
 await cp("src", "dist/src", { recursive: true });
 await cp("src", `dist${assets}`, { recursive: true });
-await writeFile("dist/index.html", html.replaceAll('"/src/', `"${assets}/`));
+await writeFile("dist/index.html", html
+  .replaceAll('"/src/', `"${assets}/`)
+  .replace('href="/manifest.webmanifest"', `href="${manifest}"`));
 const worker = await readFile("public/sw.js", "utf8");
 await writeFile("dist/sw.js", worker
   .replace(/const CACHE="[^"]+";/, `const CACHE="stueradio-${revision}";`)
+  .replace('"/manifest.webmanifest"', `"${manifest}"`)
   .replaceAll('"/src/', `"${assets}/`));
 
 console.log(`Built Stueradio into dist/ (${revision})`);
