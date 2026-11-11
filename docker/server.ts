@@ -16,6 +16,7 @@ const contentTypes: Record<string, string> = {
   ".ico": "image/x-icon",
   ".woff": "font/woff",
   ".woff2": "font/woff2",
+  ".txt": "text/plain; charset=utf-8",
 };
 
 function extension(pathname: string) {
@@ -30,6 +31,13 @@ function safePath(pathname: string) {
   return normalized;
 }
 
+function withNoIndex(headers: HeadersInit = {}) {
+  return new Headers({
+    ...Object.fromEntries(new Headers(headers).entries()),
+    "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet, noimageindex",
+  });
+}
+
 const server = Bun.serve({
   port,
   hostname: "0.0.0.0",
@@ -37,11 +45,28 @@ const server = Bun.serve({
     const url = new URL(req.url);
 
     if (url.pathname === "/health") {
-      return Response.json({ status: "ok" });
+      return Response.json(
+        { status: "ok" },
+        { headers: withNoIndex({ "Cache-Control": "no-store" }) }
+      );
+    }
+
+    if (url.pathname === "/robots.txt") {
+      return new Response("User-agent: *\nDisallow: /\n", {
+        headers: withNoIndex({
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "public, max-age=3600",
+        }),
+      });
     }
 
     const pathname = safePath(url.pathname);
-    if (!pathname) return new Response("Bad Request", { status: 400 });
+    if (!pathname) {
+      return new Response("Bad Request", {
+        status: 400,
+        headers: withNoIndex(),
+      });
+    }
 
     const requested = pathname === "/" ? "/index.html" : pathname;
     const file = Bun.file(`${root}${requested}`);
@@ -49,27 +74,29 @@ const server = Bun.serve({
     if (await file.exists()) {
       const ext = extension(requested);
       return new Response(file, {
-        headers: {
+        headers: withNoIndex({
           "Content-Type": contentTypes[ext] ?? file.type ?? "application/octet-stream",
           "Cache-Control": requested.endsWith(".html")
             ? "no-cache"
             : "public, max-age=31536000, immutable",
-        },
+        }),
       });
     }
 
-    // SPA/PWA fallback for client-side routes.
     const index = Bun.file(`${root}/index.html`);
     if (await index.exists()) {
       return new Response(index, {
-        headers: {
+        headers: withNoIndex({
           "Content-Type": "text/html; charset=utf-8",
           "Cache-Control": "no-cache",
-        },
+        }),
       });
     }
 
-    return new Response("Not Found", { status: 404 });
+    return new Response("Not Found", {
+      status: 404,
+      headers: withNoIndex(),
+    });
   },
 });
 
