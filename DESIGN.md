@@ -121,7 +121,7 @@ Station-brand colors remain attached to their existing identities.
 
 Georgia supplies station names, page headings, section headings, and the wordmark. Segoe UI with a sans-serif fallback supplies controls and information. The root size is (16px); no font download is required.
 
-The frontmatter records the default display, headline, title, body, and label roles. Responsive rules adjust the large headings. Metadata uses (.95rem) for the track title; the clock uses (1.7rem) with tabular numbers. Small supporting labels stay at (.75rem).
+The frontmatter records the default display, headline, title, body, and label roles. Responsive rules adjust the large headings. Metadata uses (1.4rem) for the wrapping track title and (1.1rem) for the artist; the clock uses (1.7rem) with tabular numbers. Small supporting labels stay at (.75rem).
 
 ## Layout
 
@@ -147,7 +147,7 @@ The enclosure is gently rounded; its display/control insert shares smaller joine
 ## Components
 
 - **Playback controls:** oxide circular play control (58px), reduced to (52px) in mobile and compact landscape layouts. Hover darkens the fill; press moves it down (1px). Previous/next and mute use transparent backgrounds with warm hover fills.
-- **Station buttons:** icon-only cream buttons with a (64px) minimum height. Hover changes fill and border; selection adds a green border, sage fill, and corner dot. Keep each station's existing mark and accessible name; omit visible labels and the station-section heading.
+- **Station buttons:** icon-only cream buttons with a (72px) minimum height. Hover changes fill and border; selection adds a green border, sage fill, and corner dot. Keep each station's existing mark and accessible name; omit visible labels and the station-section heading.
 - **Navigation and icon buttons:** navigation has a tonal active state. Default icon buttons are (44px) square; mobile header buttons are (38px) wide and (44px) high. Preserve Unicode glyphs and accessible Danish names.
 - **Weather:** a horizontally scrollable forecast in three-hour intervals for the next 24 hours, with larger weather text, current conditions first, arrow navigation, rain probabilities, and a compact tomorrow summary. Keep the sage panel, divided footer, and inline retry state.
 - **Photos:** the navigation button Se diashow opens the slideshow. There is no home-screen photo preview. Source selection, uploads, and album links live in settings; empty slideshow requests open album setup. Remote albums refresh every ten minutes.

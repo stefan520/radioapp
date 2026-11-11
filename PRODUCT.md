@@ -11,6 +11,10 @@ web
 A Danish radio PWA with station playback, now-playing metadata, album artwork,
 Aakirkeby weather, a clock, and a private photo frame.
 
+Weather refreshes every ten minutes while visible, on reconnection, and when
+returning to the app after a minute. The latest successful forecast remains
+visible on temporary failures, with its timestamp and retry state.
+
 ## Operating Context
 
 The user confirms the primary context: a tablet in the living room, combining

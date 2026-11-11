@@ -162,7 +162,10 @@ function updateWeatherScroll() {
   $("#weatherPrevious").disabled = hours.scrollLeft < 2;
   $("#weatherNext").disabled = hours.scrollLeft + hours.clientWidth >= hours.scrollWidth - 2;
 }
+let weatherLoading = false, lastWeatherUpdate = 0;
 async function loadWeather() {
+  if (weatherLoading) return;
+  weatherLoading = true;
   $("#weather").setAttribute("aria-busy", "true");
   $("#retryWeather").hidden = true;
   try {
@@ -185,12 +188,14 @@ async function loadWeather() {
     $("#weatherHours").scrollLeft = previousScroll;
     $("#weatherHours").addEventListener("scroll", updateWeatherScroll, { passive: true });
     updateWeatherScroll();
-    $("#weatherUpdated").textContent = `Vind ${weatherNumber(data.current.wind_speed_10m)} km/t`;
+    lastWeatherUpdate = Date.now();
+    const updated = new Intl.DateTimeFormat("da-DK", { hour: "2-digit", minute: "2-digit" }).format(new Date(lastWeatherUpdate));
+    $("#weatherUpdated").textContent = `Vind ${weatherNumber(data.current.wind_speed_10m)} km/t · opdateret ${updated}`;
   } catch {
-    $("#weather").innerHTML = '<p class="loading-text">Vejret lader vente på sig.<br>Prøv igen om et øjeblik.</p>';
-    $("#weatherUpdated").textContent = "Kunne ikke hente vejret";
+    if (!lastWeatherUpdate) $("#weather").innerHTML = '<p class="loading-text">Vejret lader vente på sig.<br>Prøv igen om et øjeblik.</p>';
+    $("#weatherUpdated").textContent = lastWeatherUpdate ? `Kunne ikke opdatere · senest ${new Intl.DateTimeFormat("da-DK", { hour: "2-digit", minute: "2-digit" }).format(new Date(lastWeatherUpdate))}` : "Kunne ikke hente vejret";
     $("#retryWeather").hidden = false;
-  } finally { $("#weather").setAttribute("aria-busy", "false"); }
+  } finally { weatherLoading = false; $("#weather").setAttribute("aria-busy", "false"); }
 }
 $("#retryWeather").addEventListener("click", loadWeather);
 $("#weather").addEventListener("click", (event) => {
@@ -201,7 +206,11 @@ $("#weather").addEventListener("click", (event) => {
 });
 window.addEventListener("resize", updateWeatherScroll);
 loadWeather();
-setInterval(loadWeather, 30 * 60 * 1000);
+setInterval(() => { if (!document.hidden) loadWeather(); }, 10 * 60 * 1000);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && Date.now() - lastWeatherUpdate >= 60000) loadWeather();
+});
+window.addEventListener("online", loadWeather);
 
 const DB_NAME = "stueradio-photos", STORE = "photos";
 function openPhotoDatabase() {
