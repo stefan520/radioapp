@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#2d1b10" />
+  <meta name="theme-color" content="#f4edda" />
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Stueradio" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -14,93 +14,107 @@
   <title>Stueradio</title>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <span class="eyebrow">DIT RADIOSKAB</span>
-      <h1>Stueradio</h1>
+  <header class="appbar">
+    <div class="brand">
+      <div class="brand-icon"><span></span></div>
+      <div class="brand-name">Stueradio<span>.</span></div>
     </div>
-    <div class="top-actions">
-      <button id="installBtn" class="icon-btn" type="button" aria-label="Installer app" title="Installer app" hidden>⇩</button>
-      <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Fuld skærm" title="Fuld skærm">⛶</button>
+    <div class="tabs">
+      <button class="tab active" type="button" aria-label="Radio">⊞</button>
+      <button class="tab" type="button" aria-label="Billeder">▧</button>
     </div>
+    <div class="spacer"></div>
+    <time id="clock" class="clock">--:--</time>
+    <button id="installBtn" class="top-btn" type="button" aria-label="Installer app" hidden>⇩</button>
+    <button id="fullscreenBtn" class="top-btn" type="button" aria-label="Fuld skærm">⛶</button>
+    <button class="top-btn" type="button" aria-label="Indstillinger">⚙</button>
   </header>
 
   <main class="page">
-    <section class="radio-cabinet" aria-label="Radio">
-      <div class="radio-inner">
-        <div class="now-playing">
-          <div class="now-cover-wrap">
-            <div id="stationMark" class="station-mark">RETRO</div>
-            <img id="cover" class="cover" alt="" hidden />
+    <div class="date-line">
+      <span class="date-bars"><i></i><i></i><i></i></span>
+      <span id="dateLabel">ONSDAG 11. NOVEMBER</span>
+    </div>
+    <div class="title-row">
+      <h1>Dit radioskab</h1>
+      <div class="rule"></div>
+    </div>
+
+    <section class="radio" aria-label="Stueradio">
+      <div class="radio-face">
+        <div class="display">
+          <div class="display-top">
+            <span><i class="live-dot"></i> NETRADIO</span>
+            <span id="stationNumber">FORVALG 01</span>
           </div>
-          <div class="now-copy">
-            <div class="status-row">
-              <span><i class="live-dot"></i> NETRADIO</span>
-              <span id="stationNumber">KANAL 01</span>
-            </div>
+          <div class="station-copy">
             <h2 id="stationTitle">Retro-Radio</h2>
             <p id="stationSubtitle">Danmarks Retro-Radio</p>
-            <div id="trackBlock" class="track-block">
-              <span id="trackLabel" class="track-label">SPILLER NU</span>
-              <strong id="trackTitle">Henter sangoplysninger…</strong>
-              <span id="trackArtist"></span>
+          </div>
+          <div class="now-playing">
+            <div class="cover-frame">
+              <div id="stationMark" class="station-mark">RETRO</div>
+              <img id="cover" class="cover" alt="Albumcover" hidden />
+            </div>
+            <div class="track-copy">
+              <span id="trackLabel" class="track-label">PÅ KANALEN NU</span>
+              <strong id="trackTitle">Retro-Radio</strong>
+              <span id="trackArtist">Sangoplysninger hentes…</span>
             </div>
           </div>
         </div>
 
-        <div class="dial-panel">
-          <div class="dial-head">
-            <span>FM · NET</span>
-            <span>MHz</span>
-          </div>
-          <div id="stationRail" class="station-rail" role="list" aria-label="Radiokanaler"></div>
-          <div class="frequency-line" aria-hidden="true">
-            <span>88</span><span>90</span><span>92</span><span>94</span><span>96</span><span>98</span>
-            <span>100</span><span>102</span><span>104</span><span>106</span><span>108</span>
-            <i id="needle" class="needle"></i>
-          </div>
+        <div class="speaker">
+          <div class="speaker-badge">Stueradio<span>.</span></div>
         </div>
+      </div>
 
-        <div class="radio-controls">
-          <button id="prevBtn" class="control-btn" type="button" aria-label="Forrige kanal">⏮</button>
-          <button id="playBtn" class="control-btn play-btn" type="button" aria-label="Afspil eller pause">▶</button>
-          <button id="nextBtn" class="control-btn" type="button" aria-label="Næste kanal">⏭</button>
-          <div class="volume-wrap">
-            <button id="muteBtn" class="volume-icon" type="button" aria-label="Slå lyd fra eller til">🔊</button>
-            <input id="volume" class="volume" type="range" min="0" max="1" value="0.72" step="0.01" aria-label="Lydstyrke" />
-          </div>
+      <div class="station-picker">
+        <div class="picker-head">
+          <span>STATIONSVÆLGER</span>
+          <span class="signal">⌁</span>
         </div>
+        <div id="stationRail" class="station-rail" role="list" aria-label="Radiokanaler"></div>
+        <div class="scale">
+          <div class="scale-line"></div>
+          <div class="scale-numbers">
+            <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
+          </div>
+          <i id="needle" class="needle"></i>
+          <small>MHz</small>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="playBtn" class="play" type="button" aria-label="Afspil eller pause">▶</button>
+        <button id="muteBtn" class="sound" type="button" aria-label="Slå lyd fra eller til">🔊</button>
+        <div class="volume-wrap">
+          <input id="volume" class="volume" type="range" min="0" max="1" value="0.72" step="0.01" aria-label="Lydstyrke" />
+        </div>
+        <div class="model-mark"><i></i><small>SR-01</small></div>
+        <button id="prevBtn" class="hidden-control" type="button" aria-label="Forrige kanal">⏮</button>
+        <button id="nextBtn" class="hidden-control" type="button" aria-label="Næste kanal">⏭</button>
       </div>
     </section>
 
     <section class="lower-grid">
-      <article class="panel weather-panel">
-        <div class="panel-title">
-          <div>
-            <span class="eyebrow">LOKALT</span>
-            <h3>Vejret i Randers</h3>
-          </div>
+      <article class="card">
+        <div class="card-head">
+          <div><span class="eyebrow">VEJRUDSIGT</span><h3>Randers</h3></div>
           <span id="weatherUpdated" class="small"></span>
         </div>
         <div id="weather" class="weather">Henter vejret…</div>
       </article>
 
-      <article class="panel photo-panel">
-        <div class="panel-title">
-          <div>
-            <span class="eyebrow">BILLEDRAMME</span>
-            <h3>Private billeder</h3>
-          </div>
-          <label class="icon-btn upload-btn" title="Vælg billeder" aria-label="Vælg billeder">
-            ＋
+      <article class="card">
+        <div class="card-head">
+          <div><span class="eyebrow">BILLEDRAMME</span><h3>Private billeder</h3></div>
+          <label class="top-btn upload-btn" aria-label="Vælg billeder">＋
             <input id="photoInput" type="file" accept="image/*" multiple hidden />
           </label>
         </div>
         <div id="photoStage" class="photo-stage">
-          <div class="photo-empty">
-            <span>▧</span>
-            <p>Tryk + for at vælge billeder fra tabletten eller Google Fotos.</p>
-          </div>
+          <div class="photo-empty"><span>▧</span><p>Tryk + for at vælge billeder fra tabletten eller Google Fotos.</p></div>
         </div>
       </article>
     </section>
