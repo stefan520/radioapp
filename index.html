@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#3b2416" />
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <title>Stueradio</title>
+  <style>
+    :root { font-family: Georgia, "Times New Roman", serif; color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #24170f; color: #f4e4bd; display: grid; place-items: center; padding: 24px; }
+    main { width: min(960px, 100%); background: linear-gradient(145deg,#5c351d,#2d1a10); border: 2px solid #8f6037; border-radius: 28px; padding: clamp(24px,5vw,56px); box-shadow: 0 24px 60px #0008, inset 0 0 0 6px #24140b66; }
+    .brand { letter-spacing: .22em; text-transform: uppercase; opacity: .8; font-size: .8rem; }
+    h1 { font-size: clamp(2.5rem,8vw,5.5rem); margin: .25em 0 .15em; font-weight: 500; }
+    p { font-family: system-ui,sans-serif; font-size: clamp(1rem,2.2vw,1.2rem); line-height: 1.6; color: #e4cfaa; max-width: 62ch; }
+    .dial { margin-top: 32px; height: 120px; border-radius: 16px; border: 1px solid #c6a469; background: linear-gradient(#b79558,#6c4d2b); position: relative; overflow: hidden; }
+    .dial::before { content: "88   90   92   94   96   98   100   102   104   106   108 MHz"; position: absolute; inset: 0; display: grid; place-items: center; color: #27180e; font-family: ui-monospace,monospace; font-size: clamp(.8rem,2vw,1.2rem); white-space: pre; }
+    .dial::after { content:""; position:absolute; top:10px; bottom:10px; left:50%; width:3px; background:#8a1515; box-shadow:0 0 8px #ffcf76; }
+    .status { margin-top: 28px; border: 1px solid #64825c; background: #162518; color: #b9dcae; border-radius: 14px; padding: 18px 20px; font-family: ui-monospace,monospace; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">Stueradio</div>
+    <h1>Retro Radio</h1>
+    <p>Appens Docker/PWA-shell kører. Selve den tidligere Sites-frontend er endnu ikke lagt ind i GitHub-repositoryet.</p>
+    <div class="dial" aria-hidden="true"></div>
+    <div class="status">Coolify · Bun · PWA · noindex</div>
+  </main>
+  <script>
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+  </script>
+</body>
+</html>
